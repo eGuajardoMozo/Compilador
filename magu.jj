@@ -67,8 +67,9 @@ SKIP:
 }
 
 void Programa() : {}
-{
-    ( Funcion() )+ <EOF>
+{		
+    ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Asignacion() | Definicion_Func() | Condicion() | While() | Arreglo() | 
+    		Bool() )+ <EOF>
 }
 
 void Func() : {}
@@ -94,10 +95,9 @@ void Termino() : {}
 
 void Factor() : {}
 {
-	<TK_ID> | <TK_CTE_I>
+	(<TK_ID>  ( <TK_LBRACKET> Exp() <TK_RBRACKET> )?  ) | <TK_CTE_I>
 }
 
-/*
 void Asignacion() : {}
 {
 	<TK_ID> ( <TK_LBRACKET> Exp() <TK_RBRACKET> )? <TK_EQ> Exp()
@@ -110,7 +110,7 @@ void Bool() : {}
 
 void Secuencia() : {}
 {
-	<TK_LPAR> ( Funcion() | While() | Asignacion() | Condicion() ) ( <TK_COMMA> ( Funcion() | While() | Asignacion() | Condicion() ) )* <TK_RPAR> 
+	<TK_LPAR> ( LOOKAHEAD(2) Funcion() | While() | Asignacion() | Condicion() ) ( <TK_COMMA> ( LOOKAHEAD(2) Funcion() | While() | Asignacion() | Condicion() ) )* <TK_RPAR> 
 }
 
 void While() : {}
@@ -120,7 +120,7 @@ void While() : {}
 
 void Definicion_Func() : {}
 {
-	<TK_FUNC> <TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR> Secuencia()
+	<TK_FUNC> <TK_ID> <TK_LPAR> ( <TK_ID> ( <TK_COMMA> <TK_ID> )* )? <TK_RPAR> Secuencia()
 }
 
 void Condicion() : {}
@@ -132,5 +132,3 @@ void Arreglo() : {}
 {
 	<TK_ARR> <TK_ID> <TK_LBRACKET> Exp() <TK_RBRACKET> (<TK_EQ> <TK_LPAR> Exp() (<TK_COMMA> Exp() )* <TK_RPAR> )?
 }
-
-*/
