@@ -1,0 +1,131 @@
+/*
+	MAGU Scanner/Parser
+	Adrián Martínez A01280252
+	Estefanía Guajardo A00813202
+*/
+
+PARSER_BEGIN(magu)
+class magu
+{
+	public static void main(String[] args)throws ParseException
+	{
+		try
+		{
+			magu scanner = new magu(System.in);
+			scanner.Programa();
+			System.out.println("OK!");
+		}
+		catch(ParseException e)
+		{
+			System.out.println(e.getMessage());
+			System.out.println("Error!");
+		}
+	}
+}
+PARSER_END(magu)
+
+TOKEN:
+{
+		< TK_FORWARD : "forward" | "f" >		{System.out.println("TK_FWD -> " + image);}
+	|	< TK_LEFT : "left" | "l" >				{System.out.println("TK_LEFT -> " + image);}
+	|	< TK_RIGHT : "right" | "r">				{System.out.println("TK_RIGHT -> " + image);}
+	|	< TK_PENCILUP : "pencilup" | "pu" >		{System.out.println("TK_PENCILUP -> " + image);}
+	|	< TK_PENCILDOWN : "pencildown" | "pd" >	{System.out.println("TK_PENCILDOWN -> " + image);}
+	|	< TK_MOVE : "move" | "m" >				{System.out.println("TK_MOVE -> " + image);}
+	|	< TK_SHOWPOS : "showpos" | "sp" >		{System.out.println("TK_SHOWPOS -> " + image);}
+	|	< TK_HIDEPOS : "hidepos" | "hp" >		{System.out.println("TK_HIDEPOS -> " + image);}
+	|	< TK_HOME : "home" | "h" >				{System.out.println("TK_HOME -> " + image);}
+	|	< TK_CURVE : "curve" | "cv" >			{System.out.println("TK_CURVE -> " + image);}
+	|	< TK_CLEAR : "clear" | "c" >			{System.out.println("TK_CLEAR -> " + image);}
+	|	< TK_WHILE : "while" >					{System.out.println("TK_WHILE -> " + image);}
+	|	< TK_IF : "if" >						{System.out.println("TK_IF -> " + image);}
+	|	< TK_ELSE : "else" >					{System.out.println("TK_ELSE -> " + image);}
+	|	< TK_ARR : "arr" >						{System.out.println("TK_ARR -> " + image);}
+	|	< TK_FUNC : "func" >					{System.out.println("TK_FUNC -> " + image);}
+	|	< TK_EQ: "=" >							{System.out.println("TK_EQ -> " + image);}
+	|	< TK_NE: "<>" >							{System.out.println("TK_NE -> " + image);}
+	|	< TK_LT: "<" >							{System.out.println("TK_LT -> " + image);}
+	|	< TK_GT: ">" >							{System.out.println("TK_GT -> " + image);}
+	|	< TK_LPAR: "(" >						{System.out.println("TK_LPAR -> " + image);}
+	|	< TK_RPAR: ")" >						{System.out.println("TK_RPAR -> " + image);}
+	|	< TK_LBRACKET: "[" >					{System.out.println("TK_LBRACKET -> " + image);}
+	|	< TK_RBRACKET: "]" >					{System.out.println("TK_RBRACKET -> " + image);}
+	|	< TK_COMMA: "," >						{System.out.println("TK_COMMA -> " + image);}
+	|	< TK_PLUS: "+" >						{System.out.println("TK_PLUS -> " + image);}
+	|	< TK_MINUS: "-" >						{System.out.println("TK_MINUS -> " + image);}
+	|	< TK_MULT: "*" >						{System.out.println("TK_MULT -> " + image);}
+	|	< TK_DIV: "/" >							{System.out.println("TK_DIV -> " + image);}
+	|	< TK_ID :  ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* >
+												{System.out.println("TK_ID -> " + image);}
+	|	< TK_CTE_I : (["0"-"9"])+ >	{System.out.println("TK_CTE_I -> " + image);}
+
+}
+
+SKIP:
+{
+	" "	| "\r\n" | "\t"
+}
+
+
+void Programa() : {}
+{
+    ( Funcion() )+ <EOF>
+}
+
+void Func() : {}
+{
+    ( <TK_FORWARD> | <TK_LEFT> | <TK_RIGHT> | <TK_PENCILUP> | <TK_PENCILDOWN> | <TK_MOVE> | 
+    	<TK_SHOWPOS> | <TK_HIDEPOS> | <TK_HOME> | <TK_CURVE> | <TK_CLEAR> )   
+} 
+
+void Funcion() : {}
+{
+    ( Func() | <TK_ID> ) <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
+}
+
+void Exp() : {}
+{
+	Termino() ( ( <TK_PLUS> | <TK_MINUS> ) Termino() )*
+}
+
+void Termino() : {}
+{
+	Factor() ( ( <TK_MULT> | <TK_DIV> ) Factor() )*
+}
+
+void Factor() : {}
+{
+	<TK_ID> | <TK_CTE_I>
+}
+
+/*
+void Asignacion() : {}
+{
+}
+
+void Bool() : {}
+{
+}
+
+void Secuencia() : {}
+{
+}
+
+void While() : {}
+{
+}
+
+void Definicion_Func() : {}
+{
+}
+
+void Condicion() : {}
+{
+}
+
+void Arreglo() : {}
+{
+}
+
+
+*/
