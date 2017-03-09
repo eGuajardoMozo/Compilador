@@ -5,10 +5,10 @@
 @SuppressWarnings("unused")public class maguTokenManager implements maguConstants {
 
   /** Debug output. */
-  public static  java.io.PrintStream debugStream = System.out;
+  public  java.io.PrintStream debugStream = System.out;
   /** Set debug output. */
-  public static  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }
-private static final int jjStopStringLiteralDfa_0(int pos, long active0){
+  public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }
+private final int jjStopStringLiteralDfa_0(int pos, long active0){
    switch (pos)
    {
       case 0:
@@ -57,16 +57,16 @@ private static final int jjStopStringLiteralDfa_0(int pos, long active0){
          return -1;
    }
 }
-private static final int jjStartNfa_0(int pos, long active0){
+private final int jjStartNfa_0(int pos, long active0){
    return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0), pos + 1);
 }
-static private int jjStopAtPos(int pos, int kind)
+private int jjStopAtPos(int pos, int kind)
 {
    jjmatchedKind = kind;
    jjmatchedPos = pos;
    return pos + 1;
 }
-static private int jjMoveStringLiteralDfa0_0(){
+private int jjMoveStringLiteralDfa0_0(){
    switch(curChar)
    {
       case 13:
@@ -110,7 +110,7 @@ static private int jjMoveStringLiteralDfa0_0(){
          return jjMoveNfa_0(6, 0);
    }
 }
-static private int jjMoveStringLiteralDfa1_0(long active0){
+private int jjMoveStringLiteralDfa1_0(long active0){
    try { curChar = input_stream.readChar(); }
    catch(java.io.IOException e) {
       jjStopStringLiteralDfa_0(0, active0);
@@ -143,7 +143,7 @@ static private int jjMoveStringLiteralDfa1_0(long active0){
    }
    return jjStartNfa_0(0, active0);
 }
-static private int jjMoveStringLiteralDfa2_0(long old0, long active0){
+private int jjMoveStringLiteralDfa2_0(long old0, long active0){
    if (((active0 &= old0)) == 0L)
       return jjStartNfa_0(0, old0);
    try { curChar = input_stream.readChar(); }
@@ -168,7 +168,7 @@ static private int jjMoveStringLiteralDfa2_0(long old0, long active0){
    }
    return jjStartNfa_0(1, active0);
 }
-static private int jjMoveStringLiteralDfa3_0(long old0, long active0){
+private int jjMoveStringLiteralDfa3_0(long old0, long active0){
    if (((active0 &= old0)) == 0L)
       return jjStartNfa_0(1, old0);
    try { curChar = input_stream.readChar(); }
@@ -193,7 +193,7 @@ static private int jjMoveStringLiteralDfa3_0(long old0, long active0){
    }
    return jjStartNfa_0(2, active0);
 }
-static private int jjMoveStringLiteralDfa4_0(long old0, long active0){
+private int jjMoveStringLiteralDfa4_0(long old0, long active0){
    if (((active0 &= old0)) == 0L)
       return jjStartNfa_0(2, old0);
    try { curChar = input_stream.readChar(); }
@@ -212,7 +212,7 @@ static private int jjMoveStringLiteralDfa4_0(long old0, long active0){
    }
    return jjStartNfa_0(3, active0);
 }
-static private int jjStartNfaWithStates_0(int pos, int kind, int state)
+private int jjStartNfaWithStates_0(int pos, int kind, int state)
 {
    jjmatchedKind = kind;
    jjmatchedPos = pos;
@@ -220,7 +220,7 @@ static private int jjStartNfaWithStates_0(int pos, int kind, int state)
    catch(java.io.IOException e) { return pos + 1; }
    return jjMoveNfa_0(state, pos + 1);
 }
-static private int jjMoveNfa_0(int startState, int curPos)
+private int jjMoveNfa_0(int startState, int curPos)
 {
    int startsAt = 0;
    jjnewStateCnt = 77;
@@ -670,7 +670,7 @@ public static final String[] jjstrLiteralImages = {
 "\167\150\151\154\145", "\151\146", "\145\154\163\145", "\141\162\162", "\146\165\156\143", "\75", 
 "\74\76", "\74", "\76", "\50", "\51", "\133", "\135", "\54", "\53", "\55", "\52", "\57", 
 null, null, null, null, null, };
-static protected Token jjFillToken()
+protected Token jjFillToken()
 {
    final Token t;
    final String curTokenImage;
@@ -694,15 +694,15 @@ static protected Token jjFillToken()
    return t;
 }
 
-static int curLexState = 0;
-static int defaultLexState = 0;
-static int jjnewStateCnt;
-static int jjround;
-static int jjmatchedPos;
-static int jjmatchedKind;
+int curLexState = 0;
+int defaultLexState = 0;
+int jjnewStateCnt;
+int jjround;
+int jjmatchedPos;
+int jjmatchedKind;
 
 /** Get the next Token. */
-public static Token getNextToken() 
+public Token getNextToken() 
 {
   Token matchedToken;
   int curPos = 0;
@@ -721,9 +721,6 @@ public static Token getNextToken()
       matchedToken = jjFillToken();
       return matchedToken;
    }
-   image = jjimage;
-   image.setLength(0);
-   jjimageLen = 0;
 
    try { input_stream.backup(0);
       while (curChar <= 32 && (0x100000200L & (1L << curChar)) != 0L)
@@ -740,7 +737,6 @@ public static Token getNextToken()
       if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
       {
          matchedToken = jjFillToken();
-         TokenLexicalActions(matchedToken);
          return matchedToken;
       }
       else
@@ -771,157 +767,7 @@ public static Token getNextToken()
   }
 }
 
-static void TokenLexicalActions(Token matchedToken)
-{
-   switch(jjmatchedKind)
-   {
-      case 1 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_FWD -> " + image);
-         break;
-      case 2 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                         System.out.println("TK_LEFT -> " + image);
-         break;
-      case 3 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                         System.out.println("TK_RIGHT -> " + image);
-         break;
-      case 4 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_PENCILUP -> " + image);
-         break;
-      case 5 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                         System.out.println("TK_PENCILDOWN -> " + image);
-         break;
-      case 6 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                         System.out.println("TK_MOVE -> " + image);
-         break;
-      case 7 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_SHOWPOS -> " + image);
-         break;
-      case 8 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_HIDEPOS -> " + image);
-         break;
-      case 9 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                         System.out.println("TK_HOME -> " + image);
-         break;
-      case 10 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_CURVE -> " + image);
-         break;
-      case 11 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                 System.out.println("TK_CLEAR -> " + image);
-         break;
-      case 12 :
-        image.append(jjstrLiteralImages[12]);
-        lengthOfMatch = jjstrLiteralImages[12].length();
-                                                                         System.out.println("TK_WHILE -> " + image);
-         break;
-      case 13 :
-        image.append(jjstrLiteralImages[13]);
-        lengthOfMatch = jjstrLiteralImages[13].length();
-                                                                                 System.out.println("TK_IF -> " + image);
-         break;
-      case 14 :
-        image.append(jjstrLiteralImages[14]);
-        lengthOfMatch = jjstrLiteralImages[14].length();
-                                                                         System.out.println("TK_ELSE -> " + image);
-         break;
-      case 15 :
-        image.append(jjstrLiteralImages[15]);
-        lengthOfMatch = jjstrLiteralImages[15].length();
-                                                                                 System.out.println("TK_ARR -> " + image);
-         break;
-      case 16 :
-        image.append(jjstrLiteralImages[16]);
-        lengthOfMatch = jjstrLiteralImages[16].length();
-                                                                         System.out.println("TK_FUNC -> " + image);
-         break;
-      case 17 :
-        image.append(jjstrLiteralImages[17]);
-        lengthOfMatch = jjstrLiteralImages[17].length();
-                                                                                 System.out.println("TK_EQ -> " + image);
-         break;
-      case 18 :
-        image.append(jjstrLiteralImages[18]);
-        lengthOfMatch = jjstrLiteralImages[18].length();
-                                                                                 System.out.println("TK_NE -> " + image);
-         break;
-      case 19 :
-        image.append(jjstrLiteralImages[19]);
-        lengthOfMatch = jjstrLiteralImages[19].length();
-                                                                                 System.out.println("TK_LT -> " + image);
-         break;
-      case 20 :
-        image.append(jjstrLiteralImages[20]);
-        lengthOfMatch = jjstrLiteralImages[20].length();
-                                                                                 System.out.println("TK_GT -> " + image);
-         break;
-      case 21 :
-        image.append(jjstrLiteralImages[21]);
-        lengthOfMatch = jjstrLiteralImages[21].length();
-                                                                                 System.out.println("TK_LPAR -> " + image);
-         break;
-      case 22 :
-        image.append(jjstrLiteralImages[22]);
-        lengthOfMatch = jjstrLiteralImages[22].length();
-                                                                                 System.out.println("TK_RPAR -> " + image);
-         break;
-      case 23 :
-        image.append(jjstrLiteralImages[23]);
-        lengthOfMatch = jjstrLiteralImages[23].length();
-                                                                         System.out.println("TK_LBRACKET -> " + image);
-         break;
-      case 24 :
-        image.append(jjstrLiteralImages[24]);
-        lengthOfMatch = jjstrLiteralImages[24].length();
-                                                                         System.out.println("TK_RBRACKET -> " + image);
-         break;
-      case 25 :
-        image.append(jjstrLiteralImages[25]);
-        lengthOfMatch = jjstrLiteralImages[25].length();
-                                                                                 System.out.println("TK_COMMA -> " + image);
-         break;
-      case 26 :
-        image.append(jjstrLiteralImages[26]);
-        lengthOfMatch = jjstrLiteralImages[26].length();
-                                                                                 System.out.println("TK_PLUS -> " + image);
-         break;
-      case 27 :
-        image.append(jjstrLiteralImages[27]);
-        lengthOfMatch = jjstrLiteralImages[27].length();
-                                                                                 System.out.println("TK_MINUS -> " + image);
-         break;
-      case 28 :
-        image.append(jjstrLiteralImages[28]);
-        lengthOfMatch = jjstrLiteralImages[28].length();
-                                                                                 System.out.println("TK_MULT -> " + image);
-         break;
-      case 29 :
-        image.append(jjstrLiteralImages[29]);
-        lengthOfMatch = jjstrLiteralImages[29].length();
-                                                                                 System.out.println("TK_DIV -> " + image);
-         break;
-      case 30 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                                                                 System.out.println("TK_ID -> " + image);
-         break;
-      case 31 :
-        image.append(input_stream.GetSuffix(jjimageLen + (lengthOfMatch = jjmatchedPos + 1)));
-                                                 System.out.println("TK_CTE_I -> " + image);
-         break;
-      default :
-         break;
-   }
-}
-static private void jjCheckNAdd(int state)
+private void jjCheckNAdd(int state)
 {
    if (jjrounds[state] != jjround)
    {
@@ -929,13 +775,13 @@ static private void jjCheckNAdd(int state)
       jjrounds[state] = jjround;
    }
 }
-static private void jjAddStates(int start, int end)
+private void jjAddStates(int start, int end)
 {
    do {
       jjstateSet[jjnewStateCnt++] = jjnextStates[start];
    } while (start++ != end);
 }
-static private void jjCheckNAddTwoStates(int state1, int state2)
+private void jjCheckNAddTwoStates(int state1, int state2)
 {
    jjCheckNAdd(state1);
    jjCheckNAdd(state2);
@@ -944,8 +790,8 @@ static private void jjCheckNAddTwoStates(int state1, int state2)
     /** Constructor. */
     public maguTokenManager(SimpleCharStream stream){
 
-      if (input_stream != null)
-        throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
+      if (SimpleCharStream.staticFlag)
+            throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
 
     input_stream = stream;
   }
@@ -957,7 +803,7 @@ static private void jjCheckNAddTwoStates(int state1, int state2)
   }
 
   /** Reinitialise parser. */
-  static public void ReInit(SimpleCharStream stream)
+  public void ReInit(SimpleCharStream stream)
   {
     jjmatchedPos = jjnewStateCnt = 0;
     curLexState = defaultLexState;
@@ -965,7 +811,7 @@ static private void jjCheckNAddTwoStates(int state1, int state2)
     ReInitRounds();
   }
 
-  static private void ReInitRounds()
+  private void ReInitRounds()
   {
     int i;
     jjround = 0x80000001;
@@ -974,14 +820,14 @@ static private void jjCheckNAddTwoStates(int state1, int state2)
   }
 
   /** Reinitialise parser. */
-  static public void ReInit(SimpleCharStream stream, int lexState)
+  public void ReInit(SimpleCharStream stream, int lexState)
   {
     ReInit(stream);
     SwitchTo(lexState);
   }
 
   /** Switch to specified lex state. */
-  static public void SwitchTo(int lexState)
+  public void SwitchTo(int lexState)
   {
     if (lexState >= 1 || lexState < 0)
       throw new TokenMgrError("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.", TokenMgrError.INVALID_LEXICAL_STATE);
@@ -999,15 +845,11 @@ static final long[] jjtoToken = {
 static final long[] jjtoSkip = {
    0x700000000L, 
 };
-    static protected SimpleCharStream  input_stream;
+    protected SimpleCharStream  input_stream;
 
-    static private final int[] jjrounds = new int[77];
-    static private final int[] jjstateSet = new int[2 * 77];
+    private final int[] jjrounds = new int[77];
+    private final int[] jjstateSet = new int[2 * 77];
 
-    private static final StringBuilder jjimage = new StringBuilder();
-    private static StringBuilder image = jjimage;
-    private static int jjimageLen;
-    private static int lengthOfMatch;
     
-    static protected char curChar;
+    protected char curChar;
 }

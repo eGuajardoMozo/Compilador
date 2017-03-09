@@ -4,10 +4,15 @@
 	Estefanía Guajardo A00813202
 */
 
+// Para permitir el uso de variables y que los métodos no sean estáticos por default
+options {
+	STATIC = false ;
+}
+
 PARSER_BEGIN(magu)
 class magu
 {
-	public static void main(String[] args)throws ParseException
+	public static void main(String[] args) throws ParseException
 	{
 		try
 		{
@@ -21,43 +26,45 @@ class magu
 			System.out.println("Error!");
 		}
 	}
+
+	// Variable donde se guarda el valor de las expresiones
+	int valorExp = 0;
 }
 PARSER_END(magu)
 
 TOKEN:
 {
-		< TK_FORWARD : "forward" | "f" >		{System.out.println("TK_FWD -> " + image);}
-	|	< TK_LEFT : "left" | "l" >				{System.out.println("TK_LEFT -> " + image);}
-	|	< TK_RIGHT : "right" | "r">				{System.out.println("TK_RIGHT -> " + image);}
-	|	< TK_PENCILUP : "pencilup" | "pu" >		{System.out.println("TK_PENCILUP -> " + image);}
-	|	< TK_PENCILDOWN : "pencildown" | "pd" >	{System.out.println("TK_PENCILDOWN -> " + image);}
-	|	< TK_MOVE : "move" | "m" >				{System.out.println("TK_MOVE -> " + image);}
-	|	< TK_SHOWPOS : "showpos" | "sp" >		{System.out.println("TK_SHOWPOS -> " + image);}
-	|	< TK_HIDEPOS : "hidepos" | "hp" >		{System.out.println("TK_HIDEPOS -> " + image);}
-	|	< TK_HOME : "home" | "h" >				{System.out.println("TK_HOME -> " + image);}
-	|	< TK_CURVE : "curve" | "cv" >			{System.out.println("TK_CURVE -> " + image);}
-	|	< TK_CLEAR : "clear" | "c" >			{System.out.println("TK_CLEAR -> " + image);}
-	|	< TK_WHILE : "while" >					{System.out.println("TK_WHILE -> " + image);}
-	|	< TK_IF : "if" >						{System.out.println("TK_IF -> " + image);}
-	|	< TK_ELSE : "else" >					{System.out.println("TK_ELSE -> " + image);}
-	|	< TK_ARR : "arr" >						{System.out.println("TK_ARR -> " + image);}
-	|	< TK_FUNC : "func" >					{System.out.println("TK_FUNC -> " + image);}
-	|	< TK_EQ: "=" >							{System.out.println("TK_EQ -> " + image);}
-	|	< TK_NE: "<>" >							{System.out.println("TK_NE -> " + image);}
-	|	< TK_LT: "<" >							{System.out.println("TK_LT -> " + image);}
-	|	< TK_GT: ">" >							{System.out.println("TK_GT -> " + image);}
-	|	< TK_LPAR: "(" >						{System.out.println("TK_LPAR -> " + image);}
-	|	< TK_RPAR: ")" >						{System.out.println("TK_RPAR -> " + image);}
-	|	< TK_LBRACKET: "[" >					{System.out.println("TK_LBRACKET -> " + image);}
-	|	< TK_RBRACKET: "]" >					{System.out.println("TK_RBRACKET -> " + image);}
-	|	< TK_COMMA: "," >						{System.out.println("TK_COMMA -> " + image);}
-	|	< TK_PLUS: "+" >						{System.out.println("TK_PLUS -> " + image);}
-	|	< TK_MINUS: "-" >						{System.out.println("TK_MINUS -> " + image);}
-	|	< TK_MULT: "*" >						{System.out.println("TK_MULT -> " + image);}
-	|	< TK_DIV: "/" >							{System.out.println("TK_DIV -> " + image);}
-	|	< TK_ID :  ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* >
-												{System.out.println("TK_ID -> " + image);}
-	|	< TK_CTE_I : (["0"-"9"])+ >	{System.out.println("TK_CTE_I -> " + image);}
+		< TK_FORWARD : "forward" | "f" >		{}
+	|	< TK_LEFT : "left" | "l" >				{}
+	|	< TK_RIGHT : "right" | "r">				{}
+	|	< TK_PENCILUP : "pencilup" | "pu" >		{}
+	|	< TK_PENCILDOWN : "pencildown" | "pd" >	{}
+	|	< TK_MOVE : "move" | "m" >				{}
+	|	< TK_SHOWPOS : "showpos" | "sp" >		{}
+	|	< TK_HIDEPOS : "hidepos" | "hp" >		{}
+	|	< TK_HOME : "home" | "h" >				{}
+	|	< TK_CURVE : "curve" | "cv" >			{}
+	|	< TK_CLEAR : "clear" | "c" >			{}
+	|	< TK_WHILE : "while" >					{}
+	|	< TK_IF : "if" >						{}
+	|	< TK_ELSE : "else" >					{}
+	|	< TK_ARR : "arr" >						{}
+	|	< TK_FUNC : "func" >					{}
+	|	< TK_EQ: "=" >							{}
+	|	< TK_NE: "<>" >							{}
+	|	< TK_LT: "<" >							{}
+	|	< TK_GT: ">" >							{}
+	|	< TK_LPAR: "(" >						{}
+	|	< TK_RPAR: ")" >						{}
+	|	< TK_LBRACKET: "[" >					{}
+	|	< TK_RBRACKET: "]" >					{}
+	|	< TK_COMMA: "," >						{}
+	|	< TK_PLUS: "+" >						{}
+	|	< TK_MINUS: "-" >						{}
+	|	< TK_MULT: "*" >						{}
+	|	< TK_DIV: "/" >							{}
+	|	< TK_ID :  ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* > {}
+	|	< TK_CTE_I : (["0"-"9"])+ >				{}
 
 }
 
@@ -67,9 +74,16 @@ SKIP:
 }
 
 void Programa() : {}
-{		
-    ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Asignacion() | Definicion_Func() | Condicion() | While() | Arreglo() | 
-    		Bool() )+ <EOF>
+{   
+    ( 
+    	  LOOKAHEAD(2) Funcion()
+    	| LOOKAHEAD(2) Asignacion()
+    	| Definicion_Func()
+    	| Condicion()
+    	| While()
+    	| Arreglo()
+    	| valorExp = Bool() {System.out.println(valorExp);} )+
+    <EOF>
 }
 
 void Func() : {}
@@ -83,29 +97,93 @@ void Funcion() : {}
     ( Func() | <TK_ID> ) <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
 }
 
-void Exp() : {}
+int Exp() : {int resultado; int term;}
 {
-	Termino() ( ( <TK_PLUS> | <TK_MINUS> ) Termino() )*
+	resultado = Termino()
+	( 
+		 <TK_PLUS>
+		 term = Termino()
+		 {resultado += term;}
+		
+		| 
+
+		<TK_MINUS>
+		term = Termino()
+		{resultado -= term;}
+
+		)*
+	{return resultado;}
 }
 
-void Termino() : {}
+int Termino() : {int resultado; int fact;}
 {
-	Factor() ( ( <TK_MULT> | <TK_DIV> ) Factor() )*
+	resultado = Factor()
+	( 
+		 <TK_MULT>
+		 fact = Factor()
+		 {resultado *= fact;}
+		
+		| 
+
+		<TK_DIV>
+		fact = Factor()
+		{resultado /= fact;}
+
+		)*
+	{return resultado;}
 }
 
-void Factor() : {}
+int Factor() : {Token t;}
 {
-	(<TK_ID>  ( <TK_LBRACKET> Exp() <TK_RBRACKET> )?  ) | <TK_CTE_I>
+	// Si el token es variable, sacar su valor de la tabla
+	t = <TK_ID>
+	{return TablaVariables.getValor(t);}
+
+	|
+
+	<TK_LBRACKET> Exp() <TK_RBRACKET>
+
+	|
+
+	// Si es constante, hacer parse a entero
+	t = <TK_CTE_I>
+	{return Integer.parseInt( t.image );}
 }
 
-void Asignacion() : {}
+
+void Asignacion() : { Token var; int valor;}
 {
-	<TK_ID> ( <TK_LBRACKET> Exp() <TK_RBRACKET> )? <TK_EQ> Exp()
+	var = <TK_ID>
+	<TK_EQ> 
+	valor = Exp()
+
+	{
+		TablaVariables.asignarValor(var,valor);
+	}
+
+	// <TK_ID> ( <TK_LBRACKET> Exp() <TK_RBRACKET> )? <TK_EQ> Exp()
 }
 
-void Bool() : {}
+
+int Bool() : {int resultado; int exp;}
 {
-	Exp() ( ( <TK_LT> | <TK_GT> | <TK_NE>) Exp() )?
+	resultado = Exp()
+	( 
+		<TK_LT>
+		exp = Exp()
+		{ if(resultado >= exp) {resultado =  0;} } // Si resultado no es menor que el exp, es falso, 0
+		|
+		<TK_GT>
+		exp = Exp()
+		{ if(resultado <= exp) {resultado =  0;} } // Si resultado no es mayor que el exp, es falso, 0
+		|
+		<TK_NE>
+		exp = Exp()
+		{ if(resultado == exp) {resultado =  0;} } // Si resultado es igual que el exp, es falso, 0
+
+	)?
+
+	{return resultado;}
 }
 
 void Secuencia() : {}
