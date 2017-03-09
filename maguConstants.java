@@ -31,45 +31,53 @@ public interface maguConstants {
   /** RegularExpression Id. */
   int TK_CLEAR = 11;
   /** RegularExpression Id. */
-  int TK_WHILE = 12;
+  int TK_INPUT = 12;
   /** RegularExpression Id. */
-  int TK_IF = 13;
+  int TK_PRINT = 13;
   /** RegularExpression Id. */
-  int TK_ELSE = 14;
+  int TK_WHILE = 14;
   /** RegularExpression Id. */
-  int TK_ARR = 15;
+  int TK_IF = 15;
   /** RegularExpression Id. */
-  int TK_FUNC = 16;
+  int TK_ELSE = 16;
   /** RegularExpression Id. */
-  int TK_EQ = 17;
+  int TK_ARR = 17;
   /** RegularExpression Id. */
-  int TK_NE = 18;
+  int TK_FUNC = 18;
   /** RegularExpression Id. */
-  int TK_LT = 19;
+  int TK_EQ = 19;
   /** RegularExpression Id. */
-  int TK_GT = 20;
+  int TK_NE = 20;
   /** RegularExpression Id. */
-  int TK_LPAR = 21;
+  int TK_LT = 21;
   /** RegularExpression Id. */
-  int TK_RPAR = 22;
+  int TK_GT = 22;
   /** RegularExpression Id. */
-  int TK_LBRACKET = 23;
+  int TK_LPAR = 23;
   /** RegularExpression Id. */
-  int TK_RBRACKET = 24;
+  int TK_RPAR = 24;
   /** RegularExpression Id. */
-  int TK_COMMA = 25;
+  int TK_LBRACKET = 25;
   /** RegularExpression Id. */
-  int TK_PLUS = 26;
+  int TK_RBRACKET = 26;
   /** RegularExpression Id. */
-  int TK_MINUS = 27;
+  int TK_COMMA = 27;
   /** RegularExpression Id. */
-  int TK_MULT = 28;
+  int TK_PLUS = 28;
   /** RegularExpression Id. */
-  int TK_DIV = 29;
+  int TK_MINUS = 29;
   /** RegularExpression Id. */
-  int TK_ID = 30;
+  int TK_MULT = 30;
   /** RegularExpression Id. */
-  int TK_CTE_I = 31;
+  int TK_DIV = 31;
+  /** RegularExpression Id. */
+  int TK_CTE_I = 32;
+  /** RegularExpression Id. */
+  int TK_ID = 33;
+  /** RegularExpression Id. */
+  int TK_STRING = 34;
+  /** RegularExpression Id. */
+  int QUOTE = 35;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -88,6 +96,8 @@ public interface maguConstants {
     "<TK_HOME>",
     "<TK_CURVE>",
     "<TK_CLEAR>",
+    "<TK_INPUT>",
+    "<TK_PRINT>",
     "\"while\"",
     "\"if\"",
     "\"else\"",
@@ -106,8 +116,10 @@ public interface maguConstants {
     "\"-\"",
     "\"*\"",
     "\"/\"",
-    "<TK_ID>",
     "<TK_CTE_I>",
+    "<TK_ID>",
+    "<TK_STRING>",
+    "\"\\\"\"",
     "\" \"",
     "\"\\r\\n\"",
     "\"\\t\"",

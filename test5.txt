@@ -1,0 +1,2 @@
+variable = 2+2
+print("variable = " + variable + " mas texto")

@@ -45,6 +45,8 @@ TOKEN:
 	|	< TK_HOME : "home" | "h" >				{}
 	|	< TK_CURVE : "curve" | "cv" >			{}
 	|	< TK_CLEAR : "clear" | "c" >			{}
+	|	< TK_INPUT : "input" | "in" >			{}
+	|	< TK_PRINT : "print" | "pr" >			{}
 	|	< TK_WHILE : "while" >					{}
 	|	< TK_IF : "if" >						{}
 	|	< TK_ELSE : "else" >					{}
@@ -62,10 +64,11 @@ TOKEN:
 	|	< TK_PLUS: "+" >						{}
 	|	< TK_MINUS: "-" >						{}
 	|	< TK_MULT: "*" >						{}
-	|	< TK_DIV: "/" >							{}
-	|	< TK_ID :  ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* > {}
+	|	< TK_DIV: "/" >							{}	
 	|	< TK_CTE_I : (["0"-"9"])+ >				{}
-
+	|	< TK_ID :  ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* > {}
+	|   < TK_STRING : <QUOTE> (~["\r","\n","\"" ])+ <QUOTE> > {}
+	|	< #QUOTE : "\"" >
 }
 
 SKIP:
@@ -77,6 +80,7 @@ void Programa() : {}
 {   
     ( 
     	  LOOKAHEAD(2) Funcion()
+    	| LOOKAHEAD(2) Func()
     	| LOOKAHEAD(2) Asignacion()
     	| Definicion_Func()
     	| Condicion()
@@ -86,15 +90,45 @@ void Programa() : {}
     <EOF>
 }
 
-void Func() : {}
+void Func() : { Token t; String s, s2; }
 {
-    ( <TK_FORWARD> | <TK_LEFT> | <TK_RIGHT> | <TK_PENCILUP> | <TK_PENCILDOWN> | <TK_MOVE> | 
-    	<TK_SHOWPOS> | <TK_HIDEPOS> | <TK_HOME> | <TK_CURVE> | <TK_CLEAR> )   
-} 
+    ( 
+    	  <TK_FORWARD> <TK_LPAR> Exp() <TK_RPAR>
+    	| <TK_LEFT> <TK_LPAR> Exp() <TK_RPAR>
+    	| <TK_RIGHT> <TK_LPAR> Exp() <TK_RPAR>
+    	| <TK_INPUT> <TK_LPAR> <TK_ID> <TK_RPAR>
+
+    	| <TK_PRINT> <TK_LPAR> 
+
+    			( 
+    			  t = <TK_ID> { s = String.valueOf(TablaVariables.getValor(t)); }
+    			| t = <TK_STRING> {s = t.image.substring(1, t.image.length() - 1); } // Quitar las comillas
+    			)
+    			( <TK_PLUS> 
+    				( t = <TK_ID> { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
+    				| t = <TK_STRING> {s2 = t.image.substring(1, t.image.length() - 1); s = s + s2; }
+    				) 
+    			)*
+
+    			<TK_RPAR>
+
+    			{System.out.println(s);}
+
+    	| <TK_PENCILUP> <TK_LPAR> <TK_RPAR>
+    	| <TK_PENCILDOWN> <TK_LPAR> <TK_RPAR>
+    	| <TK_MOVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
+    	| <TK_CURVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
+    	| <TK_SHOWPOS> <TK_LPAR> <TK_RPAR>
+    	| <TK_HIDEPOS> <TK_LPAR> <TK_RPAR>
+    	| <TK_HOME> <TK_LPAR> <TK_RPAR>
+    	| <TK_CLEAR> <TK_LPAR> <TK_RPAR>
+
+    )   
+}  
 
 void Funcion() : {}
 {
-    ( Func() | <TK_ID> ) <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
+    <TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
 }
 
 int Exp() : {int resultado; int term;}
