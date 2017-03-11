@@ -78,7 +78,7 @@ SKIP:
 
 void Programa() : {}
 {   
-    ( 
+    ( 		
     	  LOOKAHEAD(2) Funcion()
     	| LOOKAHEAD(2) Func()
     	| LOOKAHEAD(2) Asignacion()
@@ -126,9 +126,16 @@ void Func() : { Token t; String s, s2; }
     )   
 }  
 
-void Funcion() : {}
-{
-    <TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
+void Funcion() : {Token var; int valor;} //STILL NOT WORKING
+{	
+	var = <TK_ID>
+	<TK_LPAR>
+	valor = Exp()
+	<TK_RPAR>
+	{
+		TablaFunciones.asignarValor(var, valor);
+	}	
+    //<TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
 }
 
 int Exp() : {int resultado; int term;}

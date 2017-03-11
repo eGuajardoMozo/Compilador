@@ -1,2 +1,2 @@
-f
-20
+hola = 20
+adios(hola)
