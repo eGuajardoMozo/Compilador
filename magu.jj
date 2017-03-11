@@ -9,7 +9,11 @@ options {
 	STATIC = false ;
 }
 
+
 PARSER_BEGIN(magu)
+
+import javax.swing.*; 
+
 class magu
 {
 	public static void main(String[] args) throws ParseException
@@ -84,7 +88,24 @@ void Func() : { Token t; String s, s2; }
     	  <TK_FORWARD> <TK_LPAR> Exp() <TK_RPAR>
     	| <TK_LEFT> <TK_LPAR> Exp() <TK_RPAR>
     	| <TK_RIGHT> <TK_LPAR> Exp() <TK_RPAR>
-    	| <TK_INPUT> <TK_LPAR> <TK_ID> <TK_RPAR>
+
+
+    	| <TK_INPUT> <TK_LPAR> t = <TK_ID> <TK_RPAR>
+    			{
+    				// Crea un cuadro de dialogo. El input se guarda en la string s.
+					s = (String)JOptionPane.showInputDialog(
+			                    null, "Escribe el valor de " + t.image, "Input", JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+					// Si el campo quedo vacío o se cerró la ventana, mostrar mensaje de error y terminar ejecucion.
+					if(s==null || s.trim().isEmpty()) {
+						System.out.println("No se dio valor a la variable " + t.image);
+						System.exit(0);
+					}
+					// De lo contrario asignar valor a variable.
+					else {
+						TablaVariables.asignarValor(t,  Integer.parseInt( s ) );
+					}
+				}
 
     	| <TK_PRINT> <TK_LPAR> 
 
