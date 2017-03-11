@@ -40,11 +40,8 @@ TOKEN:
 	|	< TK_PENCILUP : "pencilup" | "pu" >		{}
 	|	< TK_PENCILDOWN : "pencildown" | "pd" >	{}
 	|	< TK_MOVE : "move" | "m" >				{}
-	|	< TK_SHOWPOS : "showpos" | "sp" >		{}
-	|	< TK_HIDEPOS : "hidepos" | "hp" >		{}
 	|	< TK_HOME : "home" | "h" >				{}
 	|	< TK_CURVE : "curve" | "cv" >			{}
-	|	< TK_CLEAR : "clear" | "c" >			{}
 	|	< TK_INPUT : "input" | "in" >			{}
 	|	< TK_PRINT : "print" | "pr" >			{}
 	|	< TK_WHILE : "while" >					{}
@@ -118,11 +115,7 @@ void Func() : { Token t; String s, s2; }
     	| <TK_PENCILDOWN> <TK_LPAR> <TK_RPAR>
     	| <TK_MOVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
     	| <TK_CURVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
-    	| <TK_SHOWPOS> <TK_LPAR> <TK_RPAR>
-    	| <TK_HIDEPOS> <TK_LPAR> <TK_RPAR>
     	| <TK_HOME> <TK_LPAR> <TK_RPAR>
-    	| <TK_CLEAR> <TK_LPAR> <TK_RPAR>
-
     )   
 }  
 
