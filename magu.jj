@@ -75,16 +75,7 @@ SKIP:
 
 void Programa() : {}
 {   
-    ( 		
-    	  LOOKAHEAD(2) Funcion()
-    	| LOOKAHEAD(2) Func()
-    	| LOOKAHEAD(2) Asignacion()
-    	| Definicion_Func()
-    	| Condicion()
-    	| While()
-    	| Arreglo()
-    	| valorExp = Bool() {System.out.println(valorExp);} )+
-    <EOF>
+    ( Definicion_Func() )* ( Arreglo() )* Secuencia() <EOF>
 }
 
 void Func() : { Token t; String s, s2; }
@@ -222,7 +213,9 @@ int Bool() : {int resultado; int exp;}
 
 void Secuencia() : {}
 {
-	<TK_LPAR> ( LOOKAHEAD(2) Funcion() | While() | Asignacion() | Condicion() ) ( <TK_COMMA> ( LOOKAHEAD(2) Funcion() | While() | Asignacion() | Condicion() ) )* <TK_RPAR> 
+	<TK_LPAR> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() )
+	( <TK_COMMA> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() ) )*
+	<TK_RPAR> 
 }
 
 void While() : {}

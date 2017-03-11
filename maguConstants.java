@@ -21,63 +21,57 @@ public interface maguConstants {
   /** RegularExpression Id. */
   int TK_MOVE = 6;
   /** RegularExpression Id. */
-  int TK_SHOWPOS = 7;
+  int TK_HOME = 7;
   /** RegularExpression Id. */
-  int TK_HIDEPOS = 8;
+  int TK_CURVE = 8;
   /** RegularExpression Id. */
-  int TK_HOME = 9;
+  int TK_INPUT = 9;
   /** RegularExpression Id. */
-  int TK_CURVE = 10;
+  int TK_PRINT = 10;
   /** RegularExpression Id. */
-  int TK_CLEAR = 11;
+  int TK_WHILE = 11;
   /** RegularExpression Id. */
-  int TK_INPUT = 12;
+  int TK_IF = 12;
   /** RegularExpression Id. */
-  int TK_PRINT = 13;
+  int TK_ELSE = 13;
   /** RegularExpression Id. */
-  int TK_WHILE = 14;
+  int TK_ARR = 14;
   /** RegularExpression Id. */
-  int TK_IF = 15;
+  int TK_FUNC = 15;
   /** RegularExpression Id. */
-  int TK_ELSE = 16;
+  int TK_EQ = 16;
   /** RegularExpression Id. */
-  int TK_ARR = 17;
+  int TK_NE = 17;
   /** RegularExpression Id. */
-  int TK_FUNC = 18;
+  int TK_LT = 18;
   /** RegularExpression Id. */
-  int TK_EQ = 19;
+  int TK_GT = 19;
   /** RegularExpression Id. */
-  int TK_NE = 20;
+  int TK_LPAR = 20;
   /** RegularExpression Id. */
-  int TK_LT = 21;
+  int TK_RPAR = 21;
   /** RegularExpression Id. */
-  int TK_GT = 22;
+  int TK_LBRACKET = 22;
   /** RegularExpression Id. */
-  int TK_LPAR = 23;
+  int TK_RBRACKET = 23;
   /** RegularExpression Id. */
-  int TK_RPAR = 24;
+  int TK_COMMA = 24;
   /** RegularExpression Id. */
-  int TK_LBRACKET = 25;
+  int TK_PLUS = 25;
   /** RegularExpression Id. */
-  int TK_RBRACKET = 26;
+  int TK_MINUS = 26;
   /** RegularExpression Id. */
-  int TK_COMMA = 27;
+  int TK_MULT = 27;
   /** RegularExpression Id. */
-  int TK_PLUS = 28;
+  int TK_DIV = 28;
   /** RegularExpression Id. */
-  int TK_MINUS = 29;
+  int TK_CTE_I = 29;
   /** RegularExpression Id. */
-  int TK_MULT = 30;
+  int TK_ID = 30;
   /** RegularExpression Id. */
-  int TK_DIV = 31;
+  int TK_STRING = 31;
   /** RegularExpression Id. */
-  int TK_CTE_I = 32;
-  /** RegularExpression Id. */
-  int TK_ID = 33;
-  /** RegularExpression Id. */
-  int TK_STRING = 34;
-  /** RegularExpression Id. */
-  int QUOTE = 35;
+  int QUOTE = 32;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -91,11 +85,8 @@ public interface maguConstants {
     "<TK_PENCILUP>",
     "<TK_PENCILDOWN>",
     "<TK_MOVE>",
-    "<TK_SHOWPOS>",
-    "<TK_HIDEPOS>",
     "<TK_HOME>",
     "<TK_CURVE>",
-    "<TK_CLEAR>",
     "<TK_INPUT>",
     "<TK_PRINT>",
     "\"while\"",
