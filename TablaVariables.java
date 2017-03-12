@@ -35,7 +35,9 @@ class TablaVariables
 		return (Integer)tabla.get(id.image);
 	}
 
-	
+	public Hashtable getTable() {
+		return tabla;
+	}
  }
   
   

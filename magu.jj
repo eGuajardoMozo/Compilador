@@ -79,7 +79,7 @@ SKIP:
 
 void Programa() : {}
 {   
-    ( Definicion_Func() )* ( Arreglo() )* Secuencia() <EOF>
+    ( Asignacion() )* ( Definicion_Func() )* ( Arreglo() )* Secuencia()  <EOF>
 }
 
 void Func() : { Token t; String s, s2; }
@@ -131,16 +131,9 @@ void Func() : { Token t; String s, s2; }
     )   
 }  
 
-void Funcion() : {Token var; int valor;} //STILL NOT WORKING
+void Funcion() : {} 
 {	
-	var = <TK_ID>
-	<TK_LPAR>
-	valor = Exp()
-	<TK_RPAR>
-	{
-		TablaFunciones.asignarValor(var, valor);
-	}	
-    //<TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
+    <TK_ID> <TK_LPAR> ( ( Exp() ) ( <TK_COMMA> Exp() )* )? <TK_RPAR>
 }
 
 int Exp() : {int resultado; int term;}
@@ -244,9 +237,27 @@ void While() : {}
 	<TK_WHILE> <TK_LPAR> Bool() <TK_RPAR> Secuencia()
 }
 
-void Definicion_Func() : {}
+void Definicion_Func() : {Token var; Token var2;}
 {
-	<TK_FUNC> <TK_ID> <TK_LPAR> ( <TK_ID> ( <TK_COMMA> <TK_ID> )* )? <TK_RPAR> Secuencia()
+	<TK_FUNC> 
+	var = <TK_ID> 
+	<TK_LPAR>
+	( 
+		var2 = <TK_ID> 
+		( 
+			<TK_COMMA> 
+			<TK_ID>	
+		)* 
+		{
+			TablaFunciones.asignarFuncionUnParametro(var, var2);
+		}
+	)?
+	{
+		TablaFunciones.asignarFuncionCeroParametros(var);
+	}
+
+	<TK_RPAR> 
+	Secuencia()
 }
 
 void Condicion() : {}

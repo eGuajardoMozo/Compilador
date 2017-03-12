@@ -1,2 +1,4 @@
-hola = 20
-adios(hola)
+adios = 3
+func hola()
+(cha = 2)
+(sadfsfd=33)
