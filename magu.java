@@ -457,13 +457,15 @@ if(resultado == exp) {resultado =  0;}
     Secuencia();
   }
 
-  final public void Definicion_Func() throws ParseException {Token var; Token var2;
+  final public void Definicion_Func() throws ParseException {Token var; Token var2; Token var3; int cont;
     jj_consume_token(TK_FUNC);
     var = jj_consume_token(TK_ID);
     jj_consume_token(TK_LPAR);
+cont = 0;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_ID:{
       var2 = jj_consume_token(TK_ID);
+cont = 1;
       label_9:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -476,18 +478,28 @@ if(resultado == exp) {resultado =  0;}
           break label_9;
         }
         jj_consume_token(TK_COMMA);
-        jj_consume_token(TK_ID);
+        var3 = jj_consume_token(TK_ID);
+cont = 2;
+if (cont == 2)
+                                {
+                                        TablaFunciones.asignarFuncionDosParametros(var, var2, var3);
+                                }
       }
-//TablaFunciones.test(var2);
-                        TablaFunciones.asignarFuncionUnParametro(var, var2);
+if (cont == 1)
+                        {
+                                TablaFunciones.asignarFuncionUnParametro(var, var2);
+                        }
       break;
       }
     default:
       jj_la1[20] = jj_gen;
       ;
     }
-TablaFunciones.asignarFuncionCeroParametros(var);
     jj_consume_token(TK_RPAR);
+if(cont == 0)
+                {
+                        TablaFunciones.asignarFuncionCeroParametros(var);
+                }
     Secuencia();
   }
 

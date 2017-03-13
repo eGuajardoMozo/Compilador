@@ -1,4 +1,6 @@
-adios = 3
-func hola()
-(cha = 2)
-(sadfsfd=33)
+adios = woo
+
+func hola(adios)
+
+(sup = 2)
+(dude=33)

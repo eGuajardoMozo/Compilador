@@ -237,26 +237,40 @@ void While() : {}
 	<TK_WHILE> <TK_LPAR> Bool() <TK_RPAR> Secuencia()
 }
 
-void Definicion_Func() : {Token var; Token var2;}
+void Definicion_Func() : {Token var; Token var2; Token var3; int cont;}
 {
 	<TK_FUNC> 
 	var = <TK_ID> 
 	<TK_LPAR>
+	{cont = 0;}
 	( 
-		var2 = <TK_ID> 
+		var2 = <TK_ID>
+		{cont = 1;}
 		( 
 			<TK_COMMA> 
-			<TK_ID>	
+			var3 = <TK_ID>
+			{cont = 2;}
+			{ 
+				if (cont == 2)
+				{
+					TablaFunciones.asignarFuncionDosParametros(var, var2, var3);
+				}
+			}				
 		)* 
 		{
-			TablaFunciones.asignarFuncionUnParametro(var, var2);
+			if (cont == 1)
+			{
+				TablaFunciones.asignarFuncionUnParametro(var, var2);
+			}
 		}
 	)?
-	{
-		TablaFunciones.asignarFuncionCeroParametros(var);
-	}
-
 	<TK_RPAR> 
+	{
+		if(cont == 0)
+		{
+			TablaFunciones.asignarFuncionCeroParametros(var);
+		}
+	}
 	Secuencia()
 }
 
