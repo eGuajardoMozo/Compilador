@@ -14,8 +14,14 @@ PARSER_BEGIN(magu)
 
 import javax.swing.*; 
 
-class magu
+class magu extends TurtleGraphicsWindow
 {
+	public magu()
+    { 
+    	super( 600, 600 );
+    }
+
+     
 	public static void main(String[] args) throws ParseException
 	{
 		try
@@ -83,12 +89,12 @@ void Programa() : {}
     ( Asignacion() )* ( Definicion_Func() )* ( Arreglo() )* Secuencia()  <EOF>
 }
 
-void Func() : { Token t; String s, s2; }
+void Func() : { Token t; String s, s2; int value, value2; }
 {
     ( 
-    	  <TK_FORWARD> <TK_LPAR> Exp() <TK_RPAR>
-    	| <TK_LEFT> <TK_LPAR> Exp() <TK_RPAR>
-    	| <TK_RIGHT> <TK_LPAR> Exp() <TK_RPAR>
+    	  <TK_FORWARD> <TK_LPAR> value = Exp() <TK_RPAR> { forward(value); }
+    	| <TK_LEFT> <TK_LPAR> value = Exp() <TK_RPAR> { left(value); }
+    	| <TK_RIGHT> <TK_LPAR> value = Exp() <TK_RPAR> { right(value); }
 
 
     	| <TK_INPUT> <TK_LPAR> t = <TK_ID> <TK_RPAR>
@@ -126,11 +132,11 @@ void Func() : { Token t; String s, s2; }
 
     			{System.out.println(s);}
 
-    	| <TK_PENCILUP> <TK_LPAR> <TK_RPAR>
-    	| <TK_PENCILDOWN> <TK_LPAR> <TK_RPAR>
-    	| <TK_MOVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
-    	| <TK_CURVE> <TK_LPAR> Exp() <TK_COMMA> Exp() <TK_RPAR>
-    	| <TK_HOME> <TK_LPAR> <TK_RPAR>
+    	| <TK_PENCILUP> <TK_LPAR> <TK_RPAR> { penup(); }
+    	| <TK_PENCILDOWN> <TK_LPAR> <TK_RPAR>  { pendown(); }
+    	| <TK_MOVE> <TK_LPAR> value = Exp() <TK_COMMA> value2 = Exp() <TK_RPAR>  { setxy(value,value2); }
+    	| <TK_CURVE> <TK_LPAR> value = Exp() <TK_COMMA> value2 = Exp() <TK_RPAR>  { arc(value,value2); }
+    	| <TK_HOME> <TK_LPAR> <TK_RPAR>  { home(); }
     )   
 }  
 
