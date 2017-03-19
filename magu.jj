@@ -33,6 +33,7 @@ class magu
 
 	// Variable donde se guarda el valor de las expresiones
 	int valorExp = 0;
+	int variableLocal;
 }
 PARSER_END(magu)
 
@@ -110,11 +111,13 @@ void Func() : { Token t; String s, s2; }
     	| <TK_PRINT> <TK_LPAR> 
 
     			( 
-    			  t = <TK_ID> { s = String.valueOf(TablaVariables.getValor(t)); }
+    			  t = <TK_ID> { if (variableLocal == 0 ) {s = String.valueOf(TablaVariables.getValor(t)); } 
+									else {s = String.valueOf(TablaVariablesLocal.getValor(t)); }}
     			| t = <TK_STRING> {s = t.image.substring(1, t.image.length() - 1); } // Quitar las comillas
     			)
     			( <TK_PLUS> 
-    				( t = <TK_ID> { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
+    				( t = <TK_ID> { if (variableLocal == 0 ) { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
+									else { s2 = String.valueOf(TablaVariablesLocal.getValor(t)); s = s + s2; } }
     				| t = <TK_STRING> {s2 = t.image.substring(1, t.image.length() - 1); s = s + s2; }
     				) 
     			)*
@@ -176,7 +179,16 @@ int Factor() : {Token t;}
 {
 	// Si el token es variable, sacar su valor de la tabla
 	t = <TK_ID>
-	{return TablaVariables.getValor(t);}
+	{
+		if (variableLocal == 0) 
+			{
+				return TablaVariables.getValor(t);
+			}
+		else if (variableLocal == 1)	
+			{
+				return TablaVariablesLocal.getValor(t);
+			}
+	}
 
 	|
 
@@ -197,7 +209,14 @@ void Asignacion() : { Token var; int valor;}
 	valor = Exp()
 
 	{
-		TablaVariables.asignarValor(var,valor);
+		if (variableLocal == 0) 
+			{
+				TablaVariables.asignarValor(var,valor);
+			}
+		else if (variableLocal == 1)	
+			{
+				TablaVariablesLocal.asignarValor(var,valor);
+			}
 	}
 
 	// <TK_ID> ( <TK_LBRACKET> Exp() <TK_RBRACKET> )? <TK_EQ> Exp()
@@ -230,6 +249,7 @@ void Secuencia() : {}
 	<TK_LPAR> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() )
 	( <TK_COMMA> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() ) )*
 	<TK_RPAR> 
+	{variableLocal = 0;}
 }
 
 void While() : {}
@@ -242,7 +262,7 @@ void Definicion_Func() : {Token var; Token var2; Token var3; int cont;}
 	<TK_FUNC> 
 	var = <TK_ID> 
 	<TK_LPAR>
-	{cont = 0;}
+	{cont = 0; variableLocal = 1;}
 	( 
 		var2 = <TK_ID>
 		{cont = 1;}

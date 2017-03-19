@@ -20,6 +20,7 @@ class magu implements maguConstants {
 
         // Variable donde se guarda el valor de las expresiones
         int valorExp = 0;
+        int variableLocal;
 
   final public void Programa() throws ParseException {
     label_1:
@@ -114,7 +115,8 @@ class magu implements maguConstants {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case TK_ID:{
         t = jj_consume_token(TK_ID);
-s = String.valueOf(TablaVariables.getValor(t));
+if (variableLocal == 0 ) {s = String.valueOf(TablaVariables.getValor(t)); }
+                                                                        else {s = String.valueOf(TablaVariablesLocal.getValor(t)); }
         break;
         }
       case TK_STRING:{
@@ -142,7 +144,8 @@ s = t.image.substring(1, t.image.length() - 1);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case TK_ID:{
           t = jj_consume_token(TK_ID);
-s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2;
+if (variableLocal == 0 ) { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
+                                                                        else { s2 = String.valueOf(TablaVariablesLocal.getValor(t)); s = s + s2; }
           break;
           }
         case TK_STRING:{
@@ -313,7 +316,14 @@ resultado /= fact;
     case TK_ID:{
       // Si el token es variable, sacar su valor de la tabla
               t = jj_consume_token(TK_ID);
-{if ("" != null) return TablaVariables.getValor(t);}
+if (variableLocal == 0)
+                        {
+                                {if ("" != null) return TablaVariables.getValor(t);}
+                        }
+                else if (variableLocal == 1)
+                        {
+                                {if ("" != null) return TablaVariablesLocal.getValor(t);}
+                        }
       break;
       }
     case TK_LBRACKET:{
@@ -340,7 +350,14 @@ resultado /= fact;
     var = jj_consume_token(TK_ID);
     jj_consume_token(TK_EQ);
     valor = Exp();
-TablaVariables.asignarValor(var,valor);
+if (variableLocal == 0)
+                        {
+                                TablaVariables.asignarValor(var,valor);
+                        }
+                else if (variableLocal == 1)
+                        {
+                                TablaVariablesLocal.asignarValor(var,valor);
+                        }
   }
 
   final public int Bool() throws ParseException {int resultado; int exp;
@@ -447,6 +464,7 @@ if(resultado == exp) {resultado =  0;}
       }
     }
     jj_consume_token(TK_RPAR);
+variableLocal = 0;
   }
 
   final public void While() throws ParseException {
@@ -461,7 +479,7 @@ if(resultado == exp) {resultado =  0;}
     jj_consume_token(TK_FUNC);
     var = jj_consume_token(TK_ID);
     jj_consume_token(TK_LPAR);
-cont = 0;
+cont = 0; variableLocal = 1;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_ID:{
       var2 = jj_consume_token(TK_ID);
@@ -587,10 +605,15 @@ if(cont == 0)
     finally { jj_save(3, xla); }
   }
 
-  private boolean jj_3R_18()
+  private boolean jj_3_3()
  {
-    if (jj_scan_token(TK_PENCILUP)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3_2()
+ {
+    if (jj_3R_12()) return true;
     return false;
   }
 
@@ -635,12 +658,6 @@ if(cont == 0)
     return false;
   }
 
-  private boolean jj_3_4()
- {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
   private boolean jj_3R_22()
  {
     if (jj_scan_token(TK_HOME)) return true;
@@ -662,12 +679,6 @@ if(cont == 0)
     return false;
   }
 
-  private boolean jj_3_3()
- {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
   private boolean jj_3R_20()
  {
     if (jj_scan_token(TK_MOVE)) return true;
@@ -682,9 +693,10 @@ if(cont == 0)
     return false;
   }
 
-  private boolean jj_3_2()
+  private boolean jj_3R_18()
  {
-    if (jj_3R_12()) return true;
+    if (jj_scan_token(TK_PENCILUP)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
@@ -720,6 +732,12 @@ if(cont == 0)
     }
     }
     }
+    return false;
+  }
+
+  private boolean jj_3_4()
+ {
+    if (jj_3R_12()) return true;
     return false;
   }
 

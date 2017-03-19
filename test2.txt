@@ -1,6 +1,12 @@
-adios = woo
+adios = 2
+test = 5
 
-func hola(adios)
+func hola (adios)
+(test = 8,
+print ("dentro de la funcion test vale: " + test))
 
-(sup = 2)
-(dude=33)
+(print ("afuera de la funcion test vale: " + test),
+sup = 44)
+
+
+
