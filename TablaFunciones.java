@@ -39,6 +39,10 @@ class TablaFunciones extends TablaVariables
 		tablafunc2.put(parametros,  valorParam1 + valorParam2);
 		System.out.println("Se guardo la funcion '" + id.image + "' con los parametros '" + parametros + "'");
 	}
+	
+	public Hashtable getTable() {
+		return tablafunc1;
+	}
  }
   
   

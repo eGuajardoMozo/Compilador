@@ -7,15 +7,19 @@
 import java.util.Hashtable;
 import java.lang.String;
 
-class TablaVariablesLocal
+class TablaVariablesLocal 
 {
 	  
 	public static Hashtable tablaLocal = new Hashtable(); 	//Tabla que almacenara los tokens declarados
+	public static Hashtable tablaLocalVariables = new Hashtable();
+	public static TablaFunciones nombreFunc = new TablaFunciones();
 	  
 	// Agregar a la tabla de tokens el id que esta siendo declarado junto con su valor, o sobreescribir su valor si ya estaba en la tabla
-	public static void asignarValor(Token id, int valor) {	
-		tablaLocal.put(id.image, valor);
-		System.out.println("Se ha asignado localmente " + id.image + " = " + getValor(id));
+	public static void asignarValor(Token id, int valor, Token nombre) {	
+		Hashtable funcion = nombreFunc.getTable();
+		tablaLocal.put(funcion.get(nombre.image), tablaLocalVariables);
+		tablaLocalVariables.put(id.image, valor);
+		System.out.println("Se ha asignado localmente " + id.image + " = " + getValor(id) + " en funcion " + nombre.image);
 	}
 
 	// Asignación de un id a id
@@ -32,7 +36,7 @@ class TablaVariablesLocal
 
 	// Obtener el valor de una variable
 	public static int getValor(Token id){
-		return (Integer)tablaLocal.get(id.image);
+		return (Integer)tablaLocalVariables.get(id.image);
 	}
  }
   

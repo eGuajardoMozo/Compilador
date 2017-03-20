@@ -40,6 +40,7 @@ class magu extends TurtleGraphicsWindow
 	// Variable donde se guarda el valor de las expresiones
 	int valorExp = 0;
 	int variableLocal;
+	Token nombreFuncActual;
 }
 PARSER_END(magu)
 
@@ -221,7 +222,7 @@ void Asignacion() : { Token var; int valor;}
 			}
 		else if (variableLocal == 1)	
 			{
-				TablaVariablesLocal.asignarValor(var,valor);
+				TablaVariablesLocal.asignarValor(var,valor, nombreFuncActual);
 			}
 	}
 
@@ -268,7 +269,7 @@ void Definicion_Func() : {Token var; Token var2; Token var3; int cont;}
 	<TK_FUNC> 
 	var = <TK_ID> 
 	<TK_LPAR>
-	{cont = 0; variableLocal = 1;}
+	{cont = 0; variableLocal = 1; nombreFuncActual = var;}
 	( 
 		var2 = <TK_ID>
 		{cont = 1;}

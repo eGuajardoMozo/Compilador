@@ -27,6 +27,7 @@ class magu extends TurtleGraphicsWindow implements maguConstants {
         // Variable donde se guarda el valor de las expresiones
         int valorExp = 0;
         int variableLocal;
+        Token nombreFuncActual;
 
   final public void Programa() throws ParseException {
     label_1:
@@ -370,7 +371,7 @@ if (variableLocal == 0)
                         }
                 else if (variableLocal == 1)
                         {
-                                TablaVariablesLocal.asignarValor(var,valor);
+                                TablaVariablesLocal.asignarValor(var,valor, nombreFuncActual);
                         }
   }
 
@@ -493,7 +494,7 @@ variableLocal = 0;
     jj_consume_token(TK_FUNC);
     var = jj_consume_token(TK_ID);
     jj_consume_token(TK_LPAR);
-cont = 0; variableLocal = 1;
+cont = 0; variableLocal = 1; nombreFuncActual = var;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_ID:{
       var2 = jj_consume_token(TK_ID);
