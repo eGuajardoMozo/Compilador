@@ -416,7 +416,7 @@ if(resultado == exp) {resultado =  0;}
   }
 
   final public void Secuencia() throws ParseException {
-    jj_consume_token(TK_LPAR);
+    jj_consume_token(TK_LBRACE);
     if (jj_2_1(2)) {
       Funcion();
     } else if (jj_2_2(2)) {
@@ -478,7 +478,7 @@ if(resultado == exp) {resultado =  0;}
         }
       }
     }
-    jj_consume_token(TK_RPAR);
+    jj_consume_token(TK_RBRACE);
 variableLocal = 0;
   }
 
@@ -536,16 +536,36 @@ if(cont == 0)
     Secuencia();
   }
 
-  final public void Condicion() throws ParseException {
+  final public void Condicion() throws ParseException {Token token; int cond;
     jj_consume_token(TK_IF);
     jj_consume_token(TK_LPAR);
-    Bool();
+    cond = Bool();
     jj_consume_token(TK_RPAR);
-    Secuencia();
+if( cond == 0) { // Si la condición es falsa, 0, leer tokens hasta encontrar "}"
+
+                        token = getNextToken();
+
+                        while (!token.image.equals("}")) {
+                                token = getNextToken();
+                        }
+        }
+        else {
+                Secuencia();
+        }
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_ELSE:{
       jj_consume_token(TK_ELSE);
-      Secuencia();
+if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
+
+                                token = getNextToken();
+
+                            while (!token.image.equals("}")) {
+                                token = getNextToken();
+                            }
+                }
+                else {
+                        Secuencia();
+                }
       break;
       }
     default:
@@ -775,10 +795,10 @@ if(cont == 0)
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x40000000,0x8000,0x4000,0xc0000000,0x2000000,0xc0000000,0x7fe,0x1000000,0x60400000,0x6000000,0x6000000,0x18000000,0x18000000,0x60400000,0xe0000,0xe0000,0x40001800,0x1000000,0x40001800,0x1000000,0x40000000,0x2000,0x1000000,0x10000,};
+      jj_la1_0 = new int[] {0x0,0x8000,0x4000,0x0,0x8000000,0x0,0x7fe,0x4000000,0x80400000,0x18000000,0x18000000,0x60000000,0x60000000,0x80400000,0xe0000,0xe0000,0x1800,0x4000000,0x1800,0x4000000,0x0,0x2000,0x4000000,0x10000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x1,0x0,0x0,0x3,0x0,0x3,0x0,0x0,0x1,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x1,0x0,0x1,0x0,0x1,0x0,0x0,0x0,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[4];
   private boolean jj_rescan = false;
@@ -965,7 +985,7 @@ if(cont == 0)
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[36];
+    boolean[] la1tokens = new boolean[38];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -982,7 +1002,7 @@ if(cont == 0)
         }
       }
     }
-    for (int i = 0; i < 36; i++) {
+    for (int i = 0; i < 38; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

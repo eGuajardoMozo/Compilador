@@ -69,6 +69,8 @@ TOKEN:
 	|	< TK_RPAR: ")" >						{}
 	|	< TK_LBRACKET: "[" >					{}
 	|	< TK_RBRACKET: "]" >					{}
+	|	< TK_LBRACE: "{" >						{}
+	|	< TK_RBRACE: "}" >						{}
 	|	< TK_COMMA: "," >						{}
 	|	< TK_PLUS: "+" >						{}
 	|	< TK_MINUS: "-" >						{}
@@ -253,9 +255,9 @@ int Bool() : {int resultado; int exp;}
 
 void Secuencia() : {}
 {
-	<TK_LPAR> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() )
+	<TK_LBRACE> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() )
 	( <TK_COMMA> ( LOOKAHEAD(2) Funcion() | LOOKAHEAD(2) Func() | While() | Asignacion() | Condicion() ) )*
-	<TK_RPAR> 
+	<TK_RBRACE> 
 	{variableLocal = 0;}
 }
 
@@ -301,9 +303,39 @@ void Definicion_Func() : {Token var; Token var2; Token var3; int cont;}
 	Secuencia()
 }
 
-void Condicion() : {}
+void Condicion() : {Token token; int cond;}
 {
-	<TK_IF> <TK_LPAR> Bool() <TK_RPAR> Secuencia() (<TK_ELSE> Secuencia() )?
+	<TK_IF> <TK_LPAR> cond = Bool() <TK_RPAR>
+ 
+	{
+		if( cond == 0) { // Si la condición es falsa, 0, leer tokens hasta encontrar "}"
+
+			token = getNextToken();
+
+			while (!token.image.equals("}")) {
+				token = getNextToken();
+			}
+        }
+        else {
+        	Secuencia();
+        }
+	}
+	
+	(
+		<TK_ELSE> { 
+			if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
+
+				token = getNextToken();
+
+			    while (!token.image.equals("}")) {
+			    	token = getNextToken();
+			    }
+	        }
+	        else {
+	        	Secuencia();
+	        }
+		}
+	)?
 }
 
 void Arreglo() : {}

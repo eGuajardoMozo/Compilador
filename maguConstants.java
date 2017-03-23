@@ -55,23 +55,27 @@ public interface maguConstants {
   /** RegularExpression Id. */
   int TK_RBRACKET = 23;
   /** RegularExpression Id. */
-  int TK_COMMA = 24;
+  int TK_LBRACE = 24;
   /** RegularExpression Id. */
-  int TK_PLUS = 25;
+  int TK_RBRACE = 25;
   /** RegularExpression Id. */
-  int TK_MINUS = 26;
+  int TK_COMMA = 26;
   /** RegularExpression Id. */
-  int TK_MULT = 27;
+  int TK_PLUS = 27;
   /** RegularExpression Id. */
-  int TK_DIV = 28;
+  int TK_MINUS = 28;
   /** RegularExpression Id. */
-  int TK_CTE_I = 29;
+  int TK_MULT = 29;
   /** RegularExpression Id. */
-  int TK_ID = 30;
+  int TK_DIV = 30;
   /** RegularExpression Id. */
-  int TK_STRING = 31;
+  int TK_CTE_I = 31;
   /** RegularExpression Id. */
-  int QUOTE = 32;
+  int TK_ID = 32;
+  /** RegularExpression Id. */
+  int TK_STRING = 33;
+  /** RegularExpression Id. */
+  int QUOTE = 34;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -102,6 +106,8 @@ public interface maguConstants {
     "\")\"",
     "\"[\"",
     "\"]\"",
+    "\"{\"",
+    "\"}\"",
     "\",\"",
     "\"+\"",
     "\"-\"",
