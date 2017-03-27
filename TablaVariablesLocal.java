@@ -6,6 +6,9 @@
 
 import java.util.Hashtable;
 import java.lang.String;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 class TablaVariablesLocal 
 {
@@ -37,6 +40,19 @@ class TablaVariablesLocal
 	// Obtener el valor de una variable
 	public static int getValor(Token id){
 		return (Integer)tablaLocalVariables.get(id.image);
+	}
+	
+	public static String getKey(int value){
+		String key = "empty";
+		Set set = tablaLocalVariables.entrySet();
+		
+		Iterator it = set.iterator();
+		while (it.hasNext()) {
+		Map.Entry entry = (Map.Entry) it.next();
+		key = entry.getKey().toString();
+		
+		}	
+		return key;
 	}
  }
   

@@ -6,6 +6,9 @@
 
 import java.util.Hashtable;
 import java.lang.String;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 class TablaVariables
 {
@@ -37,6 +40,19 @@ class TablaVariables
 
 	public Hashtable getTable() {
 		return tabla;
+	}
+	
+	public static String getKey(int value){
+		String key = "empty";
+		Set set = tabla.entrySet();
+		
+		Iterator it = set.iterator();
+		while (it.hasNext()) {
+		Map.Entry entry = (Map.Entry) it.next();
+		key = entry.getKey().toString();
+		
+		}	
+		return key;
 	}
  }
   
