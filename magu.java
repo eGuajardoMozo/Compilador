@@ -137,22 +137,30 @@ right(value);
     case TK_PRINT:{
       jj_consume_token(TK_PRINT);
       jj_consume_token(TK_LPAR);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case TK_ID:{
+      if (jj_2_1(2)) {
         t = jj_consume_token(TK_ID);
+        jj_consume_token(TK_LBRACKET);
+        value = Exp();
+        jj_consume_token(TK_RBRACKET);
+s = String.valueOf(TablaVariables.getValorArreglo(t,value));
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case TK_ID:{
+          t = jj_consume_token(TK_ID);
 if (variableLocal == 0 ) {s = String.valueOf(TablaVariables.getValor(t)); }
                                                                         else {s = String.valueOf(TablaVariablesLocal.getValor(t)); }
-        break;
-        }
-      case TK_STRING:{
-        t = jj_consume_token(TK_STRING);
+          break;
+          }
+        case TK_STRING:{
+          t = jj_consume_token(TK_STRING);
 s = t.image.substring(1, t.image.length() - 1);
-        break;
+          break;
+          }
+        default:
+          jj_la1[3] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
         }
-      default:
-        jj_la1[3] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
       }
       label_4:
       while (true) {
@@ -166,22 +174,30 @@ s = t.image.substring(1, t.image.length() - 1);
           break label_4;
         }
         jj_consume_token(TK_PLUS);
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case TK_ID:{
+        if (jj_2_2(2)) {
           t = jj_consume_token(TK_ID);
+          jj_consume_token(TK_LBRACKET);
+          value = Exp();
+          jj_consume_token(TK_RBRACKET);
+s2 = String.valueOf(TablaVariables.getValorArreglo(t,value)); s = s + s2;
+        } else {
+          switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+          case TK_ID:{
+            t = jj_consume_token(TK_ID);
 if (variableLocal == 0 ) { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
                                                                         else { s2 = String.valueOf(TablaVariablesLocal.getValor(t)); s = s + s2; }
-          break;
-          }
-        case TK_STRING:{
-          t = jj_consume_token(TK_STRING);
+            break;
+            }
+          case TK_STRING:{
+            t = jj_consume_token(TK_STRING);
 s2 = t.image.substring(1, t.image.length() - 1); s = s + s2;
-          break;
+            break;
+            }
+          default:
+            jj_la1[5] = jj_gen;
+            jj_consume_token(-1);
+            throw new ParseException();
           }
-        default:
-          jj_la1[5] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
         }
       }
       jj_consume_token(TK_RPAR);
@@ -240,7 +256,6 @@ home();
     jj_consume_token(TK_ID);
     jj_consume_token(TK_LPAR);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case TK_LBRACKET:
     case TK_CTE_I:
     case TK_ID:{
       Exp();
@@ -342,11 +357,19 @@ resultado /= fact;
     throw new Error("Missing return statement in function");
   }
 
-  final public int Factor() throws ParseException {Token t;
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case TK_ID:{
-      // Si el token es variable, sacar su valor de la tabla
+  final public int Factor() throws ParseException {Token t; int indice;
+    if (jj_2_3(2)) {
+      // Si es indice de arreglo, sacar su valor de la tabla de arreglos
               t = jj_consume_token(TK_ID);
+      jj_consume_token(TK_LBRACKET);
+      indice = Exp();
+      jj_consume_token(TK_RBRACKET);
+{if ("" != null) return TablaVariables.getValorArreglo(t,indice);}
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case TK_ID:{
+        // Si el token es variable, sacar su valor de la tabla
+                t = jj_consume_token(TK_ID);
 if (insideWhile == 1)
                 {
                         boolEsToken = 1;
@@ -359,36 +382,32 @@ if (insideWhile == 1)
                         {
                                 {if ("" != null) return TablaVariablesLocal.getValor(t);}
                         }
-      break;
-      }
-    case TK_LBRACKET:{
-      jj_consume_token(TK_LBRACKET);
-      Exp();
-      jj_consume_token(TK_RBRACKET);
-      break;
-      }
-    case TK_CTE_I:{
-      // Si es constante, hacer parse a entero
-              t = jj_consume_token(TK_CTE_I);
+        break;
+        }
+      case TK_CTE_I:{
+        // Si es constante, hacer parse a entero
+                t = jj_consume_token(TK_CTE_I);
 if (insideWhile == 1)
                 {
                         boolEsToken = 0;
                 }
 {if ("" != null) return Integer.parseInt( t.image );}
-      break;
+        break;
+        }
+      default:
+        jj_la1[13] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
-    default:
-      jj_la1[13] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
     }
     throw new Error("Missing return statement in function");
   }
 
-  final public void Asignacion() throws ParseException {Token var; int valor;
-    var = jj_consume_token(TK_ID);
-    jj_consume_token(TK_EQ);
-    valor = Exp();
+  final public void Asignacion() throws ParseException {Token var; int valor; int indice;
+    if (jj_2_4(2)) {
+      var = jj_consume_token(TK_ID);
+      jj_consume_token(TK_EQ);
+      valor = Exp();
 if (variableLocal == 0)
                         {
                                 if (insideWhile == 1)
@@ -407,6 +426,25 @@ if (variableLocal == 0)
 
                                 TablaVariablesLocal.asignarValor(var,valor, nombreFuncActual);
                         }
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case TK_ID:{
+        // Si se va a asignar un valor a un indice de arreglo
+                var = jj_consume_token(TK_ID);
+        jj_consume_token(TK_LBRACKET);
+        indice = Exp();
+        jj_consume_token(TK_RBRACKET);
+        jj_consume_token(TK_EQ);
+        valor = Exp();
+TablaVariables.asignarValorArreglo(var,valor,indice);
+        break;
+        }
+      default:
+        jj_la1[14] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
   }
 
   final public int Bool() throws ParseException {int resultado; int exp;
@@ -543,14 +581,14 @@ if(resultado == exp) {resultado =  0;}
         break;
         }
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
       }
     default:
-      jj_la1[15] = jj_gen;
+      jj_la1[16] = jj_gen;
       ;
     }
 {if ("" != null) return resultado;}
@@ -559,9 +597,9 @@ if(resultado == exp) {resultado =  0;}
 
   final public void Secuencia() throws ParseException {
     jj_consume_token(TK_LBRACE);
-    if (jj_2_1(2)) {
+    if (jj_2_5(2)) {
       Funcion();
-    } else if (jj_2_2(2)) {
+    } else if (jj_2_6(2)) {
       Func();
     } else {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -578,7 +616,7 @@ if(resultado == exp) {resultado =  0;}
         break;
         }
       default:
-        jj_la1[16] = jj_gen;
+        jj_la1[17] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -591,13 +629,13 @@ if(resultado == exp) {resultado =  0;}
         break;
         }
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[18] = jj_gen;
         break label_8;
       }
       jj_consume_token(TK_COMMA);
-      if (jj_2_3(2)) {
+      if (jj_2_7(2)) {
         Funcion();
-      } else if (jj_2_4(2)) {
+      } else if (jj_2_8(2)) {
         Func();
       } else {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -614,7 +652,7 @@ if(resultado == exp) {resultado =  0;}
           break;
           }
         default:
-          jj_la1[18] = jj_gen;
+          jj_la1[19] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -644,10 +682,11 @@ insideWhile = 1;
                         while(cond != 0)
                         {
                                 Secuencia();
+
                                 nom1Val = TablaBools.getValor(nombre);
                                 nom2Val = TablaBools.getValor(nombre2);
-                                System.out.println("1 " + nom1Val);
-                                System.out.println("2 " + nom2Val);
+                                System.out.println("Expresion 1 en bool vale " + nom1Val);
+                                System.out.println("Expresion 2 en bool vale " + nom2Val);
 
                                 if (op.equals("<"))
                                 {
@@ -704,7 +743,7 @@ cont = 1;
           break;
           }
         default:
-          jj_la1[19] = jj_gen;
+          jj_la1[20] = jj_gen;
           break label_9;
         }
         jj_consume_token(TK_COMMA);
@@ -722,7 +761,7 @@ if (cont == 1)
       break;
       }
     default:
-      jj_la1[20] = jj_gen;
+      jj_la1[21] = jj_gen;
       ;
     }
     jj_consume_token(TK_RPAR);
@@ -766,22 +805,27 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
       break;
       }
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[22] = jj_gen;
       ;
     }
   }
 
-  final public void Arreglo() throws ParseException {
+  final public void Arreglo() throws ParseException {Token var; int valor; int indice = 0;
     jj_consume_token(TK_ARR);
-    jj_consume_token(TK_ID);
+    var = jj_consume_token(TK_ID);
     jj_consume_token(TK_LBRACKET);
-    Exp();
+    valor = Exp();
     jj_consume_token(TK_RBRACKET);
+// Se declara un arreglo anonimo del tamaño indicado entre brackets.
+                // Se agrega a la hash table con el id especificado
+                TablaVariables.declararArreglo(var, new int[valor]);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_EQ:{
       jj_consume_token(TK_EQ);
       jj_consume_token(TK_LPAR);
-      Exp();
+      valor = Exp();
+TablaVariables.asignarValorArreglo(var, valor, indice);
+                        indice++;
       label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -790,17 +834,19 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
           break;
           }
         default:
-          jj_la1[22] = jj_gen;
+          jj_la1[23] = jj_gen;
           break label_10;
         }
         jj_consume_token(TK_COMMA);
-        Exp();
+        valor = Exp();
+TablaVariables.asignarValorArreglo(var, valor, indice);
+                                indice++;
       }
       jj_consume_token(TK_RPAR);
       break;
       }
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[24] = jj_gen;
       ;
     }
   }
@@ -835,6 +881,147 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     try { return !jj_3_4(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(3, xla); }
+  }
+
+  private boolean jj_2_5(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_5(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(4, xla); }
+  }
+
+  private boolean jj_2_6(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_6(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(5, xla); }
+  }
+
+  private boolean jj_2_7(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_7(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(6, xla); }
+  }
+
+  private boolean jj_2_8(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_8(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(7, xla); }
+  }
+
+  private boolean jj_3_7()
+ {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3_5()
+ {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_22()
+ {
+    if (jj_scan_token(TK_HOME)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_11()
+ {
+    if (jj_scan_token(TK_ID)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_21()
+ {
+    if (jj_scan_token(TK_CURVE)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3_3()
+ {
+    if (jj_scan_token(TK_ID)) return true;
+    if (jj_scan_token(TK_LBRACKET)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_20()
+ {
+    if (jj_scan_token(TK_MOVE)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_19()
+ {
+    if (jj_scan_token(TK_PENCILDOWN)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3_4()
+ {
+    if (jj_scan_token(TK_ID)) return true;
+    if (jj_scan_token(TK_EQ)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_18()
+ {
+    if (jj_scan_token(TK_PENCILUP)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_16()
+ {
+    if (jj_scan_token(TK_INPUT)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_15()
+ {
+    if (jj_scan_token(TK_RIGHT)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_14()
+ {
+    if (jj_scan_token(TK_LEFT)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_13()
+ {
+    if (jj_scan_token(TK_FORWARD)) return true;
+    if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3_1()
+ {
+    if (jj_scan_token(TK_ID)) return true;
+    if (jj_scan_token(TK_LBRACKET)) return true;
+    return false;
+  }
+
+  private boolean jj_3_8()
+ {
+    if (jj_3R_12()) return true;
+    return false;
   }
 
   private boolean jj_3R_12()
@@ -872,10 +1059,9 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     return false;
   }
 
-  private boolean jj_3R_16()
+  private boolean jj_3_6()
  {
-    if (jj_scan_token(TK_INPUT)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
+    if (jj_3R_12()) return true;
     return false;
   }
 
@@ -886,90 +1072,10 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     return false;
   }
 
-  private boolean jj_3R_22()
- {
-    if (jj_scan_token(TK_HOME)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_15()
- {
-    if (jj_scan_token(TK_RIGHT)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_11()
- {
-    if (jj_scan_token(TK_ID)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_21()
- {
-    if (jj_scan_token(TK_CURVE)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_14()
- {
-    if (jj_scan_token(TK_LEFT)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_20()
- {
-    if (jj_scan_token(TK_MOVE)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_13()
- {
-    if (jj_scan_token(TK_FORWARD)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3_4()
- {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_19()
- {
-    if (jj_scan_token(TK_PENCILDOWN)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_18()
- {
-    if (jj_scan_token(TK_PENCILUP)) return true;
-    if (jj_scan_token(TK_LPAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3_3()
- {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
   private boolean jj_3_2()
  {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3_1()
- {
-    if (jj_3R_11()) return true;
+    if (jj_scan_token(TK_ID)) return true;
+    if (jj_scan_token(TK_LBRACKET)) return true;
     return false;
   }
 
@@ -984,7 +1090,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[24];
+  final private int[] jj_la1 = new int[25];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -992,12 +1098,12 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x8000,0x4000,0x0,0x8000000,0x0,0x7fe,0x4000000,0x80400000,0x18000000,0x18000000,0x60000000,0x60000000,0x80400000,0xe0000,0xe0000,0x1800,0x4000000,0x1800,0x4000000,0x0,0x2000,0x4000000,0x10000,};
+      jj_la1_0 = new int[] {0x0,0x8000,0x4000,0x0,0x8000000,0x0,0x7fe,0x4000000,0x80000000,0x18000000,0x18000000,0x60000000,0x60000000,0x80000000,0x0,0xe0000,0xe0000,0x1800,0x4000000,0x1800,0x4000000,0x0,0x2000,0x4000000,0x10000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x1,0x0,0x0,0x3,0x0,0x3,0x0,0x0,0x1,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x1,0x0,0x1,0x0,0x1,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x1,0x0,0x0,0x3,0x0,0x3,0x0,0x0,0x1,0x0,0x0,0x0,0x0,0x1,0x1,0x0,0x0,0x1,0x0,0x1,0x0,0x1,0x0,0x0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[4];
+  final private JJCalls[] jj_2_rtns = new JJCalls[8];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1012,7 +1118,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1027,7 +1133,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1038,7 +1144,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1049,7 +1155,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1059,7 +1165,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1069,7 +1175,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 25; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1187,7 +1293,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < 25; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1226,7 +1332,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1237,6 +1343,10 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
             case 1: jj_3_2(); break;
             case 2: jj_3_3(); break;
             case 3: jj_3_4(); break;
+            case 4: jj_3_5(); break;
+            case 5: jj_3_6(); break;
+            case 6: jj_3_7(); break;
+            case 7: jj_3_8(); break;
           }
         }
         p = p.next;

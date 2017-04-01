@@ -135,13 +135,23 @@ void Func() : { Token t; String s, s2; int value, value2; }
 
     	| <TK_PRINT> <TK_LPAR> 
 
+    			
     			( 
+    			  LOOKAHEAD(2)
+    			  t = <TK_ID> <TK_LBRACKET> value = Exp() <TK_RBRACKET> 
+    			  				{ s = String.valueOf(TablaVariables.getValorArreglo(t,value)); } 
+    			|
     			  t = <TK_ID> { if (variableLocal == 0 ) {s = String.valueOf(TablaVariables.getValor(t)); } 
 									else {s = String.valueOf(TablaVariablesLocal.getValor(t)); }}
     			| t = <TK_STRING> {s = t.image.substring(1, t.image.length() - 1); } // Quitar las comillas
     			)
     			( <TK_PLUS> 
-    				( t = <TK_ID> { if (variableLocal == 0 ) { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
+    				( 
+    					LOOKAHEAD(2)
+    			  		t = <TK_ID> <TK_LBRACKET> value = Exp() <TK_RBRACKET> 
+    			  				{ s2 = String.valueOf(TablaVariables.getValorArreglo(t,value)); s = s + s2; } 
+    			  	|
+    					t = <TK_ID> { if (variableLocal == 0 ) { s2 = String.valueOf(TablaVariables.getValor(t)); s = s + s2; }
 									else { s2 = String.valueOf(TablaVariablesLocal.getValor(t)); s = s + s2; } }
     				| t = <TK_STRING> {s2 = t.image.substring(1, t.image.length() - 1); s = s + s2; }
     				) 
@@ -201,8 +211,20 @@ int Termino() : {int resultado; int fact;}
 	{return resultado;}
 }
 
-int Factor() : {Token t;}
+int Factor() : {Token t; int indice;}
 {
+	LOOKAHEAD(2)
+
+	// Si es indice de arreglo, sacar su valor de la tabla de arreglos
+	t = <TK_ID>
+	<TK_LBRACKET> indice = Exp() <TK_RBRACKET>
+
+		{
+			return TablaVariables.getValorArreglo(t,indice);
+		}
+
+	|
+
 	// Si el token es variable, sacar su valor de la tabla
 	t = <TK_ID>
 	{		
@@ -222,10 +244,6 @@ int Factor() : {Token t;}
 
 	|
 
-	<TK_LBRACKET> Exp() <TK_RBRACKET>
-
-	|
-
 	// Si es constante, hacer parse a entero
 	t = <TK_CTE_I>
 	{
@@ -238,8 +256,9 @@ int Factor() : {Token t;}
 }
 
 
-void Asignacion() : { Token var; int valor;}
+void Asignacion() : { Token var; int valor; int indice;}
 {
+	LOOKAHEAD(2)
 	var = <TK_ID>
 	<TK_EQ> 
 	valor = Exp()
@@ -264,7 +283,13 @@ void Asignacion() : { Token var; int valor;}
 			}
 	}
 
-	// <TK_ID> ( <TK_LBRACKET> Exp() <TK_RBRACKET> )? <TK_EQ> Exp()
+	|
+
+	// Si se va a asignar un valor a un indice de arreglo
+	var = <TK_ID> <TK_LBRACKET> indice = Exp() <TK_RBRACKET> <TK_EQ> valor = Exp()
+	{
+		TablaVariables.asignarValorArreglo(var,valor,indice);
+	}
 }
 
 
@@ -555,7 +580,29 @@ void Condicion() : {Token token; int cond;}
 	)?
 }
 
-void Arreglo() : {}
+void Arreglo() : {Token var; int valor; int indice = 0;}
 {
-	<TK_ARR> <TK_ID> <TK_LBRACKET> Exp() <TK_RBRACKET> (<TK_EQ> <TK_LPAR> Exp() (<TK_COMMA> Exp() )* <TK_RPAR> )?
+	<TK_ARR> var = <TK_ID> <TK_LBRACKET> valor = Exp() <TK_RBRACKET> 
+
+	{
+		// Se declara un arreglo anonimo del tamaño indicado entre brackets.
+		// Se agrega a la hash table con el id especificado
+		TablaVariables.declararArreglo(var, new int[valor]);
+	}
+
+	// Valores con los que se inicializa. opcional. Llama a las funciones de asignacion.
+	(<TK_EQ> <TK_LPAR> valor = Exp() 
+		{ 
+			TablaVariables.asignarValorArreglo(var, valor, indice);
+			indice++; 
+		}
+
+		(<TK_COMMA> valor = Exp() 
+			{ 
+				TablaVariables.asignarValorArreglo(var, valor, indice);
+				indice++; 
+			}
+		)* 
+		<TK_RPAR> 
+	)?
 }
