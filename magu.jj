@@ -75,6 +75,7 @@ TOKEN:
 	|	< TK_FUNC : "func" >					{}
 	|	< TK_EQ: "=" >							{}
 	|	< TK_NE: "<>" >							{}
+	|	< TK_EQT: "==" >						{}
 	|	< TK_LT: "<" >							{}
 	|	< TK_GT: ">" >							{}
 	|	< TK_LPAR: "(" >						{}
@@ -431,6 +432,51 @@ int Bool() : {int resultado; int exp;}
 			}
 		}		
 		{ if(resultado == exp) {resultado =  0;} } // Si resultado es igual que el exp, es falso, 0
+		|
+		{
+			//si el primer valor en la condicion es un id lo guardamos en la tabla de bools
+			if (boolEsToken == 1 && insideWhile == 1)
+			{
+				if (variableLocal == 0)
+				{
+					nombre = TablaVariables.getKey(resultado);
+				}
+				else if (variableLocal == 1)
+				{
+					nombre = TablaVariablesLocal.getKey(resultado);
+				}
+				
+				TablaBools.asignarValor(nombre, resultado);
+			}
+			else 
+			{
+				TablaBools.asignarValor(nombre, resultado);
+			}
+			
+		}
+		op = <TK_EQT>
+		exp = Exp()
+		{
+			//si el segundo valor en la condicion es un id lo guardamos en la tabla de bools
+			if (boolEsToken == 1 && insideWhile == 1)
+			{
+				if (variableLocal == 0)
+				{
+					nombre2 = TablaVariables.getKey(exp);
+				}
+				else if (variableLocal == 1)
+				{
+					nombre2 = TablaVariablesLocal.getKey(exp);
+				}
+				
+				TablaBools.asignarValor(nombre2, exp);
+			}
+			else 
+			{
+				TablaBools.asignarValor(nombre2, exp);
+			}
+		}
+		{ if(resultado != exp) {resultado =  0;} } // Si resultado es diferente que el exp, es falso, 0
 
 	)?
 	{return resultado;}
@@ -545,7 +591,7 @@ void Definicion_Func() : {Token var; Token var2; Token var3; int cont;}
 	Secuencia()
 }
 
-void Condicion() : {Token token; int cond;}
+void Condicion() : {Token token; int cond; int cond2; int entroelseif = 0;}
 {
 	<TK_IF> <TK_LPAR> cond = Bool() <TK_RPAR>
  
@@ -563,9 +609,28 @@ void Condicion() : {Token token; int cond;}
         }
 	}
 	
-	(
-		<TK_ELSE> { 
-			if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
+	(		
+		(
+			LOOKAHEAD(2)
+			<TK_ELSE> <TK_IF> <TK_LPAR> cond2 = Bool() <TK_RPAR>
+			{
+				if( cond2 == 0) { // Si la condición es falsa, 0, leer tokens hasta encontrar "}"
+
+					token = getNextToken();
+
+					while (!token.image.equals("}")) {
+						token = getNextToken();
+					}
+				}
+				else if (cond == 0 && cond2 != 0){
+					entroelseif = 1;
+					Secuencia();
+				}		
+			}
+		)*	
+		<TK_ELSE>
+		{ 
+			if( cond != 0 || entroelseif == 1) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
 
 				token = getNextToken();
 
@@ -573,7 +638,7 @@ void Condicion() : {Token token; int cond;}
 			    	token = getNextToken();
 			    }
 	        }
-	        else {
+	        else if (entroelseif == 0 || cond == 0){
 	        	Secuencia();
 	        }
 		}

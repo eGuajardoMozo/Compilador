@@ -451,6 +451,7 @@ TablaVariables.asignarValorArreglo(var,valor,indice);
     resultado = Exp();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_NE:
+    case TK_EQT:
     case TK_LT:
     case TK_GT:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -578,6 +579,48 @@ if(resultado <= exp) {resultado =  0;}
                                 TablaBools.asignarValor(nombre2, exp);
                         }
 if(resultado == exp) {resultado =  0;}
+        break;
+        }
+      case TK_EQT:{
+//si el primer valor en la condicion es un id lo guardamos en la tabla de bools
+                        if (boolEsToken == 1 && insideWhile == 1)
+                        {
+                                if (variableLocal == 0)
+                                {
+                                        nombre = TablaVariables.getKey(resultado);
+                                }
+                                else if (variableLocal == 1)
+                                {
+                                        nombre = TablaVariablesLocal.getKey(resultado);
+                                }
+
+                                TablaBools.asignarValor(nombre, resultado);
+                        }
+                        else
+                        {
+                                TablaBools.asignarValor(nombre, resultado);
+                        }
+        op = jj_consume_token(TK_EQT);
+        exp = Exp();
+//si el segundo valor en la condicion es un id lo guardamos en la tabla de bools
+                        if (boolEsToken == 1 && insideWhile == 1)
+                        {
+                                if (variableLocal == 0)
+                                {
+                                        nombre2 = TablaVariables.getKey(exp);
+                                }
+                                else if (variableLocal == 1)
+                                {
+                                        nombre2 = TablaVariablesLocal.getKey(exp);
+                                }
+
+                                TablaBools.asignarValor(nombre2, exp);
+                        }
+                        else
+                        {
+                                TablaBools.asignarValor(nombre2, exp);
+                        }
+if(resultado != exp) {resultado =  0;}
         break;
         }
       default:
@@ -772,7 +815,7 @@ if(cont == 0)
     Secuencia();
   }
 
-  final public void Condicion() throws ParseException {Token token; int cond;
+  final public void Condicion() throws ParseException {Token token; int cond; int cond2; int entroelseif = 0;
     jj_consume_token(TK_IF);
     jj_consume_token(TK_LPAR);
     cond = Bool();
@@ -790,8 +833,33 @@ if( cond == 0) { // Si la condición es falsa, 0, leer tokens hasta encontrar "}
         }
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case TK_ELSE:{
+      label_10:
+      while (true) {
+        if (jj_2_9(2)) {
+          ;
+        } else {
+          break label_10;
+        }
+        jj_consume_token(TK_ELSE);
+        jj_consume_token(TK_IF);
+        jj_consume_token(TK_LPAR);
+        cond2 = Bool();
+        jj_consume_token(TK_RPAR);
+if( cond2 == 0) { // Si la condición es falsa, 0, leer tokens hasta encontrar "}"
+
+                                        token = getNextToken();
+
+                                        while (!token.image.equals("}")) {
+                                                token = getNextToken();
+                                        }
+                                }
+                                else if (cond == 0 && cond2 != 0){
+                                        entroelseif = 1;
+                                        Secuencia();
+                                }
+      }
       jj_consume_token(TK_ELSE);
-if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
+if( cond != 0 || entroelseif == 1) { // Si la condición es verdad, no 0, leer tokens hasta encontrar "}"
 
                                 token = getNextToken();
 
@@ -799,7 +867,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
                                 token = getNextToken();
                             }
                 }
-                else {
+                else if (entroelseif == 0 || cond == 0){
                         Secuencia();
                 }
       break;
@@ -826,7 +894,7 @@ if( cond != 0) { // Si la condición es verdad, no 0, leer tokens hasta encontra
       valor = Exp();
 TablaVariables.asignarValorArreglo(var, valor, indice);
                         indice++;
-      label_10:
+      label_11:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case TK_COMMA:{
@@ -835,7 +903,7 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
           }
         default:
           jj_la1[23] = jj_gen;
-          break label_10;
+          break label_11;
         }
         jj_consume_token(TK_COMMA);
         valor = Exp();
@@ -915,33 +983,41 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     finally { jj_save(7, xla); }
   }
 
+  private boolean jj_2_9(int xla)
+ {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_9(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(8, xla); }
+  }
+
   private boolean jj_3_7()
  {
-    if (jj_3R_11()) return true;
+    if (jj_3R_12()) return true;
     return false;
   }
 
   private boolean jj_3_5()
  {
-    if (jj_3R_11()) return true;
+    if (jj_3R_12()) return true;
     return false;
   }
 
-  private boolean jj_3R_22()
+  private boolean jj_3R_23()
  {
     if (jj_scan_token(TK_HOME)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_11()
+  private boolean jj_3R_12()
  {
     if (jj_scan_token(TK_ID)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_21()
+  private boolean jj_3R_22()
  {
     if (jj_scan_token(TK_CURVE)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
@@ -955,14 +1031,14 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     return false;
   }
 
-  private boolean jj_3R_20()
+  private boolean jj_3R_21()
  {
     if (jj_scan_token(TK_MOVE)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_19()
+  private boolean jj_3R_20()
  {
     if (jj_scan_token(TK_PENCILDOWN)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
@@ -976,38 +1052,45 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     return false;
   }
 
-  private boolean jj_3R_18()
+  private boolean jj_3R_19()
  {
     if (jj_scan_token(TK_PENCILUP)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_16()
+  private boolean jj_3R_17()
  {
     if (jj_scan_token(TK_INPUT)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_15()
+  private boolean jj_3R_16()
  {
     if (jj_scan_token(TK_RIGHT)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_14()
+  private boolean jj_3R_15()
  {
     if (jj_scan_token(TK_LEFT)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
     return false;
   }
 
-  private boolean jj_3R_13()
+  private boolean jj_3R_14()
  {
     if (jj_scan_token(TK_FORWARD)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3_9()
+ {
+    if (jj_scan_token(TK_ELSE)) return true;
+    if (jj_scan_token(TK_IF)) return true;
     return false;
   }
 
@@ -1018,18 +1101,10 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     return false;
   }
 
-  private boolean jj_3_8()
- {
-    if (jj_3R_12()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_12()
+  private boolean jj_3R_13()
  {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3R_13()) {
-    jj_scanpos = xsp;
     if (jj_3R_14()) {
     jj_scanpos = xsp;
     if (jj_3R_15()) {
@@ -1046,7 +1121,9 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     jj_scanpos = xsp;
     if (jj_3R_21()) {
     jj_scanpos = xsp;
-    if (jj_3R_22()) return true;
+    if (jj_3R_22()) {
+    jj_scanpos = xsp;
+    if (jj_3R_23()) return true;
     }
     }
     }
@@ -1056,16 +1133,22 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
     }
     }
     }
+    return false;
+  }
+
+  private boolean jj_3_8()
+ {
+    if (jj_3R_13()) return true;
     return false;
   }
 
   private boolean jj_3_6()
  {
-    if (jj_3R_12()) return true;
+    if (jj_3R_13()) return true;
     return false;
   }
 
-  private boolean jj_3R_17()
+  private boolean jj_3R_18()
  {
     if (jj_scan_token(TK_PRINT)) return true;
     if (jj_scan_token(TK_LPAR)) return true;
@@ -1098,12 +1181,12 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x8000,0x4000,0x0,0x8000000,0x0,0x7fe,0x4000000,0x80000000,0x18000000,0x18000000,0x60000000,0x60000000,0x80000000,0x0,0xe0000,0xe0000,0x1800,0x4000000,0x1800,0x4000000,0x0,0x2000,0x4000000,0x10000,};
+      jj_la1_0 = new int[] {0x0,0x8000,0x4000,0x0,0x10000000,0x0,0x7fe,0x8000000,0x0,0x30000000,0x30000000,0xc0000000,0xc0000000,0x0,0x0,0x1e0000,0x1e0000,0x1800,0x8000000,0x1800,0x8000000,0x0,0x2000,0x8000000,0x10000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x1,0x0,0x0,0x3,0x0,0x3,0x0,0x0,0x1,0x0,0x0,0x0,0x0,0x1,0x1,0x0,0x0,0x1,0x0,0x1,0x0,0x1,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x2,0x0,0x0,0x6,0x0,0x6,0x0,0x0,0x3,0x0,0x0,0x0,0x0,0x3,0x2,0x0,0x0,0x2,0x0,0x2,0x0,0x2,0x0,0x0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[8];
+  final private JJCalls[] jj_2_rtns = new JJCalls[9];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1288,7 +1371,7 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[38];
+    boolean[] la1tokens = new boolean[39];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -1305,7 +1388,7 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
         }
       }
     }
-    for (int i = 0; i < 38; i++) {
+    for (int i = 0; i < 39; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -1332,7 +1415,7 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 9; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1347,6 +1430,7 @@ TablaVariables.asignarValorArreglo(var, valor, indice);
             case 5: jj_3_6(); break;
             case 6: jj_3_7(); break;
             case 7: jj_3_8(); break;
+            case 8: jj_3_9(); break;
           }
         }
         p = p.next;
